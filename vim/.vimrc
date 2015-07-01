@@ -4,7 +4,7 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'https://github.com/chriskempson/base16-vim'
+Plugin 'https://github.com/sjl/badwolf'
 Plugin 'https://github.com/kien/ctrlp.vim'
 Plugin 'https://github.com/scrooloose/nerdtree'
 Plugin 'https://github.com/terryma/vim-multiple-cursors'
@@ -23,8 +23,7 @@ filetype plugin indent on
 
 let mapleader = ','
 
-colorscheme base16-default
-let base16colorspace=256
+colorscheme badwolf
 
 " Ctrlp config
 if executable('ag')
