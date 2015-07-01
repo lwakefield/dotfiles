@@ -48,11 +48,11 @@ let g:airline#extensions#tabline#left_alt_sep = ''
 " Tagbar config
 nmap <leader>r :TagbarOpenAutoClose<CR>
 
-set number
 nmap <leader>n :bnext<CR>
 nmap <leader>p :bprev<CR>
 nmap <leader>q :bd<CR>
 
+set number
 set cursorline
 set expandtab
 set tabstop=4
