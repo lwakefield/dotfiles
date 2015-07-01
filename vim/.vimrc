@@ -34,9 +34,6 @@ if executable('ag')
 	let g:ctrlp_use_caching = 0
 endif
 
-" NERDTreeConfig
-nmap <leader>t :NERDTreeToggle<CR>
-
 " Airline config
 set laststatus=2
 let g:airline#extensions#tabline#enabled = 1
@@ -45,11 +42,14 @@ let g:airline_right_sep=''
 let g:airline#extensions#tabline#left_sep = ''
 let g:airline#extensions#tabline#left_alt_sep = ''
 
-" Tagbar config
-nmap <leader>r :TagbarOpenAutoClose<CR>
-
-nmap <leader>n :bnext<CR>
-nmap <leader>p :bprev<CR>
+" Mappings
+nmap <leader>p :CtrlP<CR>
+nmap <leader>r :CtrlPBufTag<CR>
+nmap <leader>b :CtrlPBuffer<CR>
+nmap <leader>t :NERDTreeToggle<CR>
+nmap <leader>R :TagbarToggle<CR>
+nmap <leader>n :bprev<CR>
+nmap <leader>m :bnext<CR>
 nmap <leader>q :bd<CR>
 
 set number
