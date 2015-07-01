@@ -51,3 +51,7 @@ set number
 nmap <leader>n :bnext<CR>
 nmap <leader>p :bprev<CR>
 nmap <leader>q :bd<CR>
+
+set expandtab
+set tabstop=4
+set shiftwidth=4
