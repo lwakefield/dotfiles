@@ -47,4 +47,6 @@ let g:airline#extensions#tabline#left_alt_sep = ''
 nmap <leader>r :TagbarOpenAutoClose<CR>
 
 set number
-set cursorline
+nmap <leader>n :bnext<CR>
+nmap <leader>p :bprev<CR>
+nmap <leader>q :bd<CR>
