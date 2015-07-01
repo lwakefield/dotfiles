@@ -4,7 +4,7 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'https://github.com/sjl/badwolf'
+Plugin 'https://github.com/morhetz/gruvbox'
 Plugin 'https://github.com/kien/ctrlp.vim'
 Plugin 'https://github.com/scrooloose/nerdtree'
 Plugin 'https://github.com/terryma/vim-multiple-cursors'
@@ -23,7 +23,9 @@ filetype plugin indent on
 
 let mapleader = ','
 
-colorscheme badwolf
+colorscheme gruvbox
+syntax enable
+set background=dark
 
 " Ctrlp config
 if executable('ag')
@@ -49,3 +51,8 @@ set number
 nmap <leader>n :bnext<CR>
 nmap <leader>p :bprev<CR>
 nmap <leader>q :bd<CR>
+
+set cursorline
+set expandtab
+set tabstop=4
+set shiftwidth=4
