@@ -11,6 +11,7 @@ Plugin 'https://github.com/terryma/vim-multiple-cursors'
 Plugin 'https://github.com/bling/vim-airline'
 Plugin 'https://github.com/scrooloose/syntastic/'
 Plugin 'https://github.com/majutsushi/tagbar'
+Plugin 'https://github.com/StanAngeloff/php.vim'
 
 " The following are needed for snipmate
 Plugin 'https://github.com/tomtom/tlib_vim'
