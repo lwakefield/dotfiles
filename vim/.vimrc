@@ -53,6 +53,7 @@ nmap <leader>m :bnext<CR>
 nmap <leader>q :bd<CR>
 
 set number
+set mouse=a
 set cursorline
 set expandtab
 set tabstop=4
