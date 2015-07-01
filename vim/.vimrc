@@ -52,6 +52,7 @@ nmap <leader>n :bnext<CR>
 nmap <leader>p :bprev<CR>
 nmap <leader>q :bd<CR>
 
+set cursorline
 set expandtab
 set tabstop=4
 set shiftwidth=4
