@@ -11,9 +11,13 @@ Plugin 'https://github.com/terryma/vim-multiple-cursors'
 Plugin 'https://github.com/bling/vim-airline'
 Plugin 'https://github.com/scrooloose/syntastic/'
 Plugin 'https://github.com/majutsushi/tagbar'
-Plugin 'https://github.com/StanAngeloff/php.vim'
 Plugin 'https://github.com/SirVer/ultisnips'
 Plugin 'https://github.com/honza/vim-snippets'
+
+" Syntaxes
+Plugin 'https://github.com/StanAngeloff/php.vim'
+Plugin 'https://github.com/groenewege/vim-less'
+Plugin 'https://github.com/othree/html5.vim'
 
 call vundle#end()
 filetype plugin indent on
@@ -39,7 +43,7 @@ let g:airline#extensions#tabline#left_sep = ''
 let g:airline#extensions#tabline#left_alt_sep = ''
 
 " Mappings
-nmap <leader>p :CtrlP<CR>
+nmap <leader>p :CtrlPCurWD<CR>
 nmap <leader>r :CtrlPBufTag<CR>
 nmap <leader>b :CtrlPBuffer<CR>
 nmap <leader>t :NERDTreeToggle<CR>
@@ -50,6 +54,9 @@ nmap <leader>q :bd<CR>
 
 set number
 set mouse=a
+set foldmethod=indent
+set foldlevelstart=20
+set incsearch
 set cursorline
 set expandtab
 set tabstop=4
