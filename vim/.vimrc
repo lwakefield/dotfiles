@@ -12,11 +12,7 @@ Plugin 'https://github.com/bling/vim-airline'
 Plugin 'https://github.com/scrooloose/syntastic/'
 Plugin 'https://github.com/majutsushi/tagbar'
 Plugin 'https://github.com/StanAngeloff/php.vim'
-
-" The following are needed for snipmate
-Plugin 'https://github.com/tomtom/tlib_vim'
-Plugin 'https://github.com/MarcWeber/vim-addon-mw-utils'
-Plugin 'https://github.com/garbas/vim-snipmate'
+Plugin 'https://github.com/SirVer/ultisnips'
 Plugin 'https://github.com/honza/vim-snippets'
 
 call vundle#end()

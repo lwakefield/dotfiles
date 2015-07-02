@@ -37,3 +37,6 @@
 [submodule "vim/.vim/bundle/php.vim"]
 	path = vim/.vim/bundle/php.vim
 	url = https://github.com/StanAngeloff/php.vim
+[submodule "vim/.vim/bundle/ultisnips"]
+	path = vim/.vim/bundle/ultisnips
+	url = https://github.com/SirVer/ultisnips
