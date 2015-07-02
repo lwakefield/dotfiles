@@ -11,8 +11,6 @@ Plugin 'https://github.com/terryma/vim-multiple-cursors'
 Plugin 'https://github.com/bling/vim-airline'
 Plugin 'https://github.com/scrooloose/syntastic/'
 Plugin 'https://github.com/majutsushi/tagbar'
-Plugin 'https://github.com/mattn/emmet-vim'
-Plugin 'https://github.com/ervandew/supertab'
 
 " Syntaxes
 Plugin 'https://github.com/StanAngeloff/php.vim'
@@ -48,9 +46,6 @@ let g:airline_right_sep=''
 let g:airline#extensions#tabline#left_sep = ''
 let g:airline#extensions#tabline#left_alt_sep = ''
 
-" Emmet fix so that tab works as the expander
-imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
-
 " Mappings
 nmap <leader>p :CtrlPCurWD<CR>
 nmap <leader>r :CtrlPBufTag<CR>
@@ -63,6 +58,8 @@ nmap <leader>q :bd<CR>
 
 set number
 set mouse=a
+set foldmethod=indent
+set foldlevelstart=20
 set incsearch
 set cursorline
 set expandtab
