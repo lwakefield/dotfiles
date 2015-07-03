@@ -51,6 +51,7 @@ nmap <leader>R :TagbarToggle<CR>
 nmap <leader>n :bprev<CR>
 nmap <leader>m :bnext<CR>
 nmap <leader>q :bd<CR>
+nmap <leader>h :set hlsearch! hlsearch?<CR>
 
 set number
 set mouse=a
@@ -62,3 +63,4 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set backspace=2
+set hlsearch
