@@ -44,6 +44,7 @@ let g:airline#extensions#tabline#left_sep = ''
 let g:airline#extensions#tabline#left_alt_sep = ''
 
 " YouCompleteMe config
+" use <CR> to select an item from youcompleteme
 let g:ycm_key_list_select_completion=[]
 let g:ycm_key_list_previous_completion=[]
 
