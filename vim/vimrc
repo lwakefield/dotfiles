@@ -4,7 +4,7 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'https://github.com/morhetz/gruvbox'
+Plugin 'https://github.com/flazz/vim-colorschemes.git'
 Plugin 'https://github.com/kien/ctrlp.vim'
 Plugin 'https://github.com/scrooloose/nerdtree'
 Plugin 'https://github.com/terryma/vim-multiple-cursors'
@@ -25,7 +25,7 @@ filetype plugin indent on
 
 let mapleader = ','
 
-colorscheme gruvbox
+colorscheme solarized
 syntax enable
 set background=dark
 
