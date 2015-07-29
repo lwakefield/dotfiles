@@ -20,6 +20,7 @@ Plugin 'https://github.com/StanAngeloff/php.vim'
 Plugin 'https://github.com/shawncplus/phpcomplete.vim'
 Plugin 'https://github.com/groenewege/vim-less'
 Plugin 'https://github.com/othree/html5.vim'
+Plugin 'https://github.com/derekwyatt/vim-scala'
 
 call vundle#end()
 filetype plugin indent on
