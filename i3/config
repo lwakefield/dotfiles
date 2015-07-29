@@ -112,3 +112,6 @@ gaps inner 10
 gaps outer 0
 
 focus_follows_mouse no
+
+bindsym XF86AudioRaiseVolume exec amixer sset 'Master' 5%+
+bindsym XF86AudioLowerVolume exec amixer sset 'Master' 5%-
