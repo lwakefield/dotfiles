@@ -64,6 +64,7 @@ set number
 set mouse=a
 set cursorline
 set backspace=2
+set hidden
 " fold options
 set foldmethod=indent
 set foldlevelstart=20
