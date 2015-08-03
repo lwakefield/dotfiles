@@ -14,6 +14,7 @@ Plugin 'https://github.com/majutsushi/tagbar'
 Plugin 'https://github.com/SirVer/ultisnips'
 Plugin 'https://github.com/honza/vim-snippets'
 Plugin 'https://github.com/Valloric/YouCompleteMe'
+Plugin 'https://github.com/tpope/vim-surround'
 
 " Syntaxes
 Plugin 'https://github.com/StanAngeloff/php.vim'
