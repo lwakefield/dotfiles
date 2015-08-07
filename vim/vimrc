@@ -64,6 +64,7 @@ nmap <leader>m :bnext<CR>
 nmap <leader>q :bd<CR>
 nmap <leader>h :set hlsearch! hlsearch?<CR>
 nmap <Leader>s :%s/\<<C-r><C-w>\>/
+map <leader>c <plug>NERDCommenterToggle<CR>
 
 set number
 set mouse=a
