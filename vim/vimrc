@@ -53,6 +53,12 @@ let g:airline#extensions#tabline#left_alt_sep = ''
 let g:ycm_key_list_select_completion=[]
 let g:ycm_key_list_previous_completion=[]
 
+"NERDCommenter config
+let g:NERDCreateDefaultMappings=0
+
+"UltiSnips close preview on finish
+autocmd CompleteDone * pclose
+
 " Mappings
 nmap <leader>p :CtrlPCurWD<CR>
 nmap <leader>r :CtrlPBufTag<CR>
