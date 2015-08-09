@@ -58,6 +58,7 @@ let g:NERDCreateDefaultMappings=0
 
 "UltiSnips close preview on finish
 autocmd CompleteDone * pclose
+UltiSnipsAddFiletypes php.html
 
 " Mappings
 nmap <leader>p :CtrlPCurWD<CR>
