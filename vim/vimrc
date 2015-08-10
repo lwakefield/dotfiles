@@ -60,6 +60,10 @@ let g:NERDCreateDefaultMappings=0
 autocmd CompleteDone * pclose
 autocmd BufEnter,BufNew *UltiSnipsAddFiletypes ctp.html
 
+"Syntastic config
+"phpcs is slow?
+let g:syntastic_php_checkers = ["php"]
+
 " Mappings
 nmap <leader>p :CtrlPCurWD<CR>
 nmap <leader>r :CtrlPBufTag<CR>
