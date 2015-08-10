@@ -58,7 +58,7 @@ let g:NERDCreateDefaultMappings=0
 
 "UltiSnips close preview on finish
 autocmd CompleteDone * pclose
-autocmd BufEnter,BufNew *UltiSnipsAddFiletypes php.html
+autocmd BufEnter,BufNew *.php UltiSnipsAddFiletypes php.html
 
 "Syntastic config
 "phpcs is slow?
