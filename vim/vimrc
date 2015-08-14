@@ -18,6 +18,7 @@ Plugin 'https://github.com/tpope/vim-surround'
 Plugin 'https://github.com/tpope/vim-repeat'
 Plugin 'https://github.com/scrooloose/nerdcommenter'
 Plugin 'https://github.com/unblevable/quick-scope'
+Plugin 'https://github.com/tmhedberg/matchit'
 
 " Syntaxes
 Plugin 'https://github.com/StanAngeloff/php.vim'
