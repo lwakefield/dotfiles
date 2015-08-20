@@ -37,10 +37,13 @@ colorscheme solarized
 syntax enable
 set background=dark
 
+set noswapfile
+
 " Ctrlp config
 if executable('ag')
 	let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 	let g:ctrlp_use_caching = 0
+    let g:ctrlp_mruf_relative = 1
 endif
 
 " Airline config
@@ -68,7 +71,7 @@ autocmd BufEnter,BufNew *.php UltiSnipsAddFiletypes php.html
 let g:syntastic_php_checkers = ["php"]
 
 " Mappings
-nmap <leader>p :CtrlPCurWD<CR>
+nmap <leader>p :CtrlPMixed<CR>
 nmap <leader>r :CtrlPBufTag<CR>
 nmap <leader>b :CtrlPBuffer<CR>
 nmap <leader>t :NERDTreeToggle<CR>
