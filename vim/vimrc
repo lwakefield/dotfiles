@@ -37,7 +37,6 @@ colorscheme solarized
 syntax enable
 set background=dark
 
-set noswapfile
 
 " Ctrlp config
 if executable('ag')
@@ -95,8 +94,12 @@ set foldlevelstart=20
 " search options
 set incsearch
 set hlsearch
+set ignorecase
+set smartcase
 " indent options
 set expandtab
 set tabstop=4
 set shiftwidth=4
 set smartindent
+" swap options
+set noswapfile
