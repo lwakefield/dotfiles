@@ -82,6 +82,7 @@ nmap <leader>h :set hlsearch! hlsearch?<CR>
 nmap <Leader>s :%s/\<<C-r><C-w>\>/
 map <leader>c <plug>NERDCommenterToggle<CR>
 imap :w <Esc>:w<CR> 
+nmap :W :w<CR>
 
 set number
 set mouse=a
