@@ -20,6 +20,7 @@ Plugin 'https://github.com/scrooloose/nerdcommenter'
 Plugin 'https://github.com/unblevable/quick-scope'
 Plugin 'https://github.com/tmhedberg/matchit'
 Plugin 'https://github.com/airblade/vim-gitgutter'
+Plugin 'https://github.com/mtth/scratch.vim'
 
 " Syntaxes
 Plugin 'https://github.com/StanAngeloff/php.vim'
@@ -41,6 +42,7 @@ set background=dark
 " Ctrlp config
 if executable('ag')
 	let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+    let g:ctrlp_working_path_mode = 'a'
 	let g:ctrlp_use_caching = 0
     let g:ctrlp_mruf_relative = 1
 endif
