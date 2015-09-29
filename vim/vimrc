@@ -5,6 +5,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'https://github.com/flazz/vim-colorschemes.git'
+Plugin 'chriskempson/base16-vim'
 Plugin 'https://github.com/kien/ctrlp.vim'
 Plugin 'https://github.com/scrooloose/nerdtree'
 Plugin 'https://github.com/terryma/vim-multiple-cursors'
@@ -34,7 +35,8 @@ filetype plugin indent on
 
 let mapleader = ','
 
-colorscheme solarized
+let base16colorspace=256
+colorscheme base16-eighties
 syntax enable
 set background=dark
 
