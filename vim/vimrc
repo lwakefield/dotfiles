@@ -76,7 +76,6 @@ let g:syntastic_php_checkers = ["php"]
 " Mappings
 nmap <leader>p :CtrlPMixed<CR>
 nmap <leader>r :CtrlPBufTag<CR>
-nmap <leader>b :CtrlPBuffer<CR>
 nmap <leader>t :NERDTreeToggle<CR>
 nmap <leader>R :TagbarToggle<CR>
 nmap <leader>n :bprev<CR>
