@@ -5,7 +5,7 @@ export ZSH=~/.oh-my-zsh
 ZSH_THEME="sorin"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-plugins=(git)
+plugins=(git autojump)
 
 # User configuration
 export PATH=$HOME/bin:/usr/local/bin:$PATH
