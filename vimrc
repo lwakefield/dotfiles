@@ -36,7 +36,10 @@ filetype plugin indent on
 let mapleader = ','
 
 let base16colorspace=256
-colorscheme base16-eighties
+try
+    colorscheme base16-eighties
+catch /^Vim\%((\a\+)\)\=:E185/
+endtry
 syntax enable
 set background=dark
 
