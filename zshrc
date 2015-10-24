@@ -9,8 +9,8 @@ plugins=(git autojump)
 
 # User configuration
 export PATH=$HOME/bin:/usr/local/bin:$PATH
-
 source $ZSH/oh-my-zsh.sh
+export TERM="xterm-256color"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
