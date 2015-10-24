@@ -29,6 +29,8 @@ Plugin 'https://github.com/shawncplus/phpcomplete.vim'
 Plugin 'https://github.com/groenewege/vim-less'
 Plugin 'https://github.com/othree/html5.vim'
 Plugin 'https://github.com/derekwyatt/vim-scala'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 
 call vundle#end()
 filetype plugin indent on
@@ -48,6 +50,7 @@ set background=dark
 if executable('ag')
 	let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
     let g:ctrlp_working_path_mode = 'a'
+
 	let g:ctrlp_use_caching = 0
     let g:ctrlp_mruf_relative = 1
 endif
@@ -89,6 +92,9 @@ nmap <Leader>s :%s/\<<C-r><C-w>\>/
 map <leader>c <plug>NERDCommenterToggle<CR>
 imap :w <Esc>:w<CR> 
 nmap :W :w<CR>
+
+" Set syntaxes
+autocmd BufEnter,BufNew *.scholmd setlocal filetype=markdown
 
 set number
 set mouse=a
