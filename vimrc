@@ -14,7 +14,8 @@ Plugin 'https://github.com/scrooloose/syntastic/'
 Plugin 'https://github.com/majutsushi/tagbar'
 Plugin 'https://github.com/SirVer/ultisnips'
 Plugin 'https://github.com/honza/vim-snippets'
-Plugin 'https://github.com/Valloric/YouCompleteMe'
+"Plugin 'https://github.com/Valloric/YouCompleteMe'
+Plugin 'https://github.com/ervandew/supertab'
 Plugin 'https://github.com/tpope/vim-surround'
 Plugin 'https://github.com/tpope/vim-repeat'
 Plugin 'https://github.com/scrooloose/nerdcommenter'
@@ -22,6 +23,7 @@ Plugin 'https://github.com/unblevable/quick-scope'
 Plugin 'https://github.com/tmhedberg/matchit'
 Plugin 'https://github.com/airblade/vim-gitgutter'
 Plugin 'https://github.com/mtth/scratch.vim'
+Plugin 'https://github.com/kchmck/vim-coffee-script'
 
 " Syntaxes
 Plugin 'https://github.com/StanAngeloff/php.vim'
@@ -62,8 +64,8 @@ let g:airline#extensions#tabline#left_alt_sep = ''
 
 " YouCompleteMe config
 " use <CR> to select an item from youcompleteme
-let g:ycm_key_list_select_completion=[]
-let g:ycm_key_list_previous_completion=[]
+"let g:ycm_key_list_select_completion=[]
+"let g:ycm_key_list_previous_completion=[]
 
 "NERDCommenter config
 let g:NERDCreateDefaultMappings=0
@@ -71,6 +73,8 @@ let g:NERDCreateDefaultMappings=0
 "UltiSnips close preview on finish
 autocmd CompleteDone * pclose
 autocmd BufEnter,BufNew *.php UltiSnipsAddFiletypes php.html
+let g:UltiSnipsJumpForwardTrigger="<Tab>"
+let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 
 "Syntastic config
 "phpcs is slow?
@@ -86,10 +90,16 @@ nmap <leader>m :bnext<CR>
 nmap <leader>q :bd<CR>
 nmap <leader>h :set hlsearch! hlsearch?<CR>
 nmap <Leader>s :%s/\<<C-r><C-w>\>/
+nmap <leader>v V$%
+nmap <leader>% %%v%
+nmap <leader>= V$%=
+nmap <leader>a ggVG
+vmap <leader>y :y*<CR>
 map <leader>c <plug>NERDCommenterToggle<CR>
 imap :w <Esc>:w<CR> 
 nmap :W :w<CR>
 
+"set paste
 set number
 set mouse=a
 set cursorline
@@ -108,5 +118,6 @@ set expandtab
 set tabstop=4
 set shiftwidth=4
 set smartindent
+set autoindent
 " swap options
 set noswapfile
