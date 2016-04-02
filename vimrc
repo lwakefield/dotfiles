@@ -1,110 +1,112 @@
+" First are the tool plugins
+"   If there are options, they are define after the plugin is defined
+" Then come the syntax plugins
+" Next in line are the vanilla vim options
+" Followed by mappings
+" And finishing up with abbreviations
 set nocompatible
 filetype off
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'https://github.com/flazz/vim-colorschemes.git'
 Plugin 'chriskempson/base16-vim'
-Plugin 'https://github.com/kien/ctrlp.vim'
-Plugin 'https://github.com/scrooloose/nerdtree'
-Plugin 'https://github.com/terryma/vim-multiple-cursors'
-Plugin 'https://github.com/bling/vim-airline'
-Plugin 'https://github.com/scrooloose/syntastic/'
-Plugin 'https://github.com/majutsushi/tagbar'
-Plugin 'https://github.com/SirVer/ultisnips'
-Plugin 'https://github.com/honza/vim-snippets'
-"Plugin 'https://github.com/Valloric/YouCompleteMe'
-Plugin 'https://github.com/ervandew/supertab'
-Plugin 'https://github.com/tpope/vim-surround'
-Plugin 'https://github.com/tpope/vim-repeat'
-Plugin 'https://github.com/scrooloose/nerdcommenter'
-Plugin 'https://github.com/unblevable/quick-scope'
-Plugin 'https://github.com/tmhedberg/matchit'
-Plugin 'https://github.com/airblade/vim-gitgutter'
-Plugin 'https://github.com/mtth/scratch.vim'
-Plugin 'https://github.com/kchmck/vim-coffee-script'
+Plugin 'tpope/vim-fugitive'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'majutsushi/tagbar'
+Plugin 'honza/vim-snippets'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'Valloric/YouCompleteMe'
+"Plugin 'ervandew/supertab'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'tmhedberg/matchit'
+Plugin 'airblade/vim-gitgutter'
 
-" Syntaxes
-Plugin 'https://github.com/StanAngeloff/php.vim'
-Plugin 'https://github.com/shawncplus/phpcomplete.vim'
-Plugin 'https://github.com/groenewege/vim-less'
-Plugin 'https://github.com/othree/html5.vim'
-Plugin 'https://github.com/derekwyatt/vim-scala'
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+" Below are plugins with config, in no particular order
+Plugin 'scrooloose/syntastic'
+let g:syntastic_php_checkers = ['php']
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_vue_checkers = ['eslint']
 
-call vundle#end()
-filetype plugin indent on
+Plugin 'scrooloose/nerdtree'
+let g:NERDCreateDefaultMappings=0
 
-let mapleader = ','
+Plugin 'vim-airline/vim-airline'
+set laststatus=2
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+let g:airline_extensions = ['branch', 'tabline']
 
-let base16colorspace=256
-try
-    colorscheme base16-eighties
-catch /^Vim\%((\a\+)\)\=:E185/
-endtry
-syntax enable
-set background=dark
-
-
-" Ctrlp config
+Plugin 'ctrlpvim/ctrlp.vim'
 if executable('ag')
-	let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
     let g:ctrlp_working_path_mode = 'a'
 
 	let g:ctrlp_use_caching = 0
     let g:ctrlp_mruf_relative = 1
 endif
 
-" Airline config
-set laststatus=2
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_left_sep=''
-let g:airline_right_sep=''
-let g:airline#extensions#tabline#left_sep = ''
-let g:airline#extensions#tabline#left_alt_sep = ''
+Plugin 'easymotion/vim-easymotion'
+nmap / <Plug>(easymotion-sn)
+nmap ? <Plug>(easymotion-sn)
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
+let g:EasyMotion_enter_jump_first = 1
+let g:EasyMotion_smartcase = 1
+let g:EasyMotion_smartsign = 1
 
-" YouCompleteMe config
-" use <CR> to select an item from youcompleteme
-"let g:ycm_key_list_select_completion=[]
-"let g:ycm_key_list_previous_completion=[]
+Plugin 'SirVer/ultisnips'
+let g:UltiSnipsExpandTrigger = "<nop>"
+inoremap <expr> <cr> pumvisible() ? "<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>" : "\<CR>""
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
-"NERDCommenter config
-let g:NERDCreateDefaultMappings=0
+Plugin 'rhysd/clever-f.vim'
+let g:clever_f_timeout_ms = 2000
 
-"UltiSnips close preview on finish
-autocmd CompleteDone * pclose
-autocmd BufEnter,BufNew *.php UltiSnipsAddFiletypes php.html
-let g:UltiSnipsJumpForwardTrigger="<Tab>"
-let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+Plugin 'terryma/vim-expand-region'
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
 
-"Syntastic config
-"phpcs is slow?
-let g:syntastic_php_checkers = ["php"]
+Plugin 'mileszs/ack.vim'
+if executable('ag')
+    let g:ackprg = 'ag --vimgrep'
+endif
+let g:ack_autoclose = 1
+let g:ackpreview = 1
 
-" Mappings
-nmap <leader>p :CtrlPMixed<CR>
-nmap <leader>r :CtrlPBufTag<CR>
-nmap <leader>t :NERDTreeToggle<CR>
-nmap <leader>R :TagbarToggle<CR>
-nmap <leader>n :bprev<CR>
-nmap <leader>m :bnext<CR>
-nmap <leader>q :bd<CR>
-nmap <leader>h :set hlsearch! hlsearch?<CR>
-nmap <Leader>s :%s/\<<C-r><C-w>\>/
-nmap <leader>v V$%
-nmap <leader>% %%v%
-nmap <leader>= V$%=
-nmap <leader>a ggVG
-vmap <leader>y :y*<CR>
-map <leader>c <plug>NERDCommenterToggle<CR>
-imap :w <Esc>:w<CR> 
-nmap :W :w<CR>
+" Syntaxes
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'StanAngeloff/php.vim'
+Plugin 'shawncplus/phpcomplete.vim'
+Plugin 'groenewege/vim-less'
+Plugin 'cakebaker/scss-syntax.vim'
+Plugin 'othree/html5.vim'
+Plugin 'derekwyatt/vim-scala'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+"Plugin 'posva/vim-vue'
+Plugin 'evidens/vim-twig'
+Plugin 'pangloss/vim-javascript'
+Plugin 'sekel/vim-vue-syntastic'
 
-" Set syntaxes
-autocmd BufEnter,BufNew *.scholmd setlocal filetype=markdown
+call vundle#end()
+filetype plugin indent on
 
+let mapleader = ","
+
+" Colorscheme setup
+let base16colorspace=256
+colorscheme base16-flat
+set background=dark
+syntax enable
+set relativenumber
 set number
 set mouse=a
 set cursorline
@@ -126,3 +128,45 @@ set smartindent
 set autoindent
 " swap options
 set noswapfile
+
+" Mappings
+" Prefer function keys for meta vim actions
+noremap <F4> :e ~/.vimrc<CR>
+noremap <F5> :so ~/.vimrc<CR>
+noremap <F6> :PluginInstall<CR>
+" Prefer Ctrl mappings for interface actions
+noremap <C-Bslash> :NERDTreeToggle<CR>
+noremap <C-f> :Ack 
+
+" Use leader mappings here, because they are frequent and faster
+nmap <leader>p :CtrlPMixed<CR>
+nmap <leader>r :CtrlPBufTag<CR>
+
+nmap <C-Up> <C-o>
+nmap <C-Down> <C-i>
+
+" Add control mappings, they are faster for multiple actions
+nmap <C-Left> :bprev<CR>
+nmap <C-Right> :bnext<CR>
+nmap <C-q> :bd<CR>
+nmap <leader>n :bprev<CR>
+nmap <leader>m :bnext<CR>
+nmap <leader>q :bd<CR>
+
+
+silent! nunmap <leader>hp
+silent! nunmap <leader>hr
+silent! nunmap <leader>hs
+nmap <leader>h :set hlsearch! hlsearch?<CR>
+nmap <leader>v V$%
+nmap <leader>% %%v%
+nmap <leader>= V$%=
+nmap <leader>a ggVG
+vmap <leader>y :y*<CR>
+map <leader>c <plug>NERDCommenterToggle<CR>
+
+imap :w <Esc>:w<CR> 
+nmap :W :w<CR>
+map <leader>b :let &background = ( &background == "dark"? "light" : "dark" )<CR>
+
+iabbrev lgo log

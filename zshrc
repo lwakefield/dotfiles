@@ -22,5 +22,11 @@ export TERM="xterm-256color"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # Base16 Shell
-BASE16_SHELL="$HOME/.config/base16-shell/base16-eighties.dark.sh"
-[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+BASE16_LIGHT_SHELL="$HOME/.config/base16-shell/base16-flat.light.sh"
+BASE16_DARK_SHELL="$HOME/.config/base16-shell/base16-flat.dark.sh"
+[[ -s $BASE16_DARK_SHELL ]] && source $BASE16_DARK_SHELL
+
+alias lbg='source $BASE16_LIGHT_SHELL'
+alias dbg='source $BASE16_DARK_SHELL'
+alias s='source ~/.zshrc'
+alias vim='mvim -v'
