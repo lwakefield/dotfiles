@@ -5,6 +5,7 @@
     ~/.tmux.conf: tmux.conf
     ~/.vim: vim/
     ~/.vimrc: vimrc
+    ~/.config/nvim/init.vim: neovim/init.vim
     ~/.zshrc: zshrc
 
 - shell:
