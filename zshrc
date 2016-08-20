@@ -38,10 +38,12 @@ alias s='source ~/.zshrc'
 alias vim='nvim'
 alias server='python -m SimpleHTTPServer'
 alias weather='curl -4 wttr.in'
-alias hide-icons='defaults write com.apple.finder CreateDesktop -bool false && killall Finder'
-alias show-icons='defaults write com.apple.finder CreateDesktop -bool true && killall Finder'
 alias chromeless='open -a "Google Chrome" -n --args "--app=http://localhost:8080"'
 alias subl='/Applications/Sublime\ Text.app/Contents/MacOS/Sublime\ Text'
+
+alias rand-str='env LC_CTYPE=C tr -dc "a-zA-Z0-9-_\$\?" < /dev/urandom | head -c 64'
+alias list='du -sh ./* | gsort -h'
+
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

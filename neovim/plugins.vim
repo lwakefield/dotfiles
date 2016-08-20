@@ -37,14 +37,14 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'SirVer/ultisnips'
     let g:UltiSnipsUsePythonVersion = 3
-    let g:UltiSnipsExpandTrigger = "<nop>"
+    let g:UltiSnipsExpandTrigger = "<C-Space>"
     autocmd FileType vue UltiSnipsAddFiletypes javascript
 
     Plug 'Shougo/deoplete.nvim'
     " Show menu when there is only one match
     " Show longest match first
     let g:deoplete#enable_at_startup = 1
-    let g:deoplete#disable_auto_complete=1
+    " let g:deoplete#disable_auto_complete=1
     let g:deoplete#enable_smart_case = 1
 
     " Below are plugins with config, in no particular order
@@ -66,11 +66,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'vim-airline/vim-airline'
     set laststatus=2
     let g:airline#extensions#bufferline#enabled = 1
-    let g:airline#extensions#tabline#enabled = 1
     let g:airline#extensions#tabline#show_tabs = 0
+    let g:airline#extensions#tabline#enabled = 1
     let g:airline_left_sep=''
     let g:airline_right_sep=''
-    let g:airline#extensions#tabline#buffer_idx_mode = 1
 
     " Syntaxes
     Plug 'kchmck/vim-coffee-script'
@@ -88,5 +87,6 @@ call plug#begin('~/.vim/plugged')
     let g:javascript_enable_domhtmlcss=1
     Plug 'sekel/vim-vue-syntastic'
     Plug 'fatih/vim-go'
+    Plug 'flowtype/vim-flow'
 
 call plug#end()
