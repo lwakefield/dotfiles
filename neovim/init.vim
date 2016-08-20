@@ -74,7 +74,7 @@ endif
 
 " Autocomplete mappings
 
-imap <expr> <Tab> pumvisible() ? "\<C-n>" : TabComplete()
+imap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 imap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 nmap <leader>1 <Plug>AirlineSelectTab1
