@@ -51,6 +51,7 @@ colorscheme base16-paraiso
 " Prefer function keys for meta vim actions
 noremap <F4> :e ~/.config/nvim/init.vim<CR>
 noremap <leader>dd :e ~/.config/nvim/init.vim<CR>
+noremap <leader>dz :e ~/.zshrc<CR>
 noremap <leader>dp :e ~/.config/nvim/plugins.vim<CR>
 noremap <F5> :PlugInstall<CR>
 autocmd! bufwritepost ~/.config/nvim/init.vim source ~/.config/nvim/init.vim
