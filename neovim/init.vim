@@ -43,6 +43,7 @@ let mapleader = ","
 runtime defaults.vim
 runtime plugins.vim
 
+set t_Co=256
 let base16colorspace=256
 colorscheme base16-paraiso
 
@@ -63,11 +64,12 @@ nmap <leader>c <plug>NERDCommenterToggle<CR>
 vmap <leader>c <plug>NERDCommenterToggle<CR>
 noremap <leader>f :Autoformat<CR>
 vmap <leader>f :Autoformat<CR>
-nmap <leader>p :FZF<CR>
+nmap <leader>p :Files<CR>
 
 if exists("neovim_dot_app")
     call MacMenu("File.Print", "")
-    nmap <D-p> :FZF<CR>
+    nmap <D-p> :Files<CR>
+    nmap <D-S-p> :Buffers<CR>
     nmap <D-/> <plug>NERDCommenterToggle<CR>
     vmap <D-/> <plug>NERDCommenterToggle<CR>
 endif
@@ -110,7 +112,7 @@ if exists("neovim_dot_app")
     call MacMenu("Window.Close Tab", "")
     call MacMenu("Window.Close Other Tabs", "")
     nnoremap <D-w> :bd<CR>
-    nnoremap <D-W> :bd!<CR>
+    nnoremap <D-S-w> :bd!<CR>
 endif
 
 nmap <leader>h :set hlsearch! hlsearch?<CR>
@@ -143,6 +145,33 @@ inoremap <Esc> <Esc>l
 vmap :w <Esc>:w<CR>
 nmap :W :w<CR>
 " nmap <leader>b :ls<CR>:b <c-z><s-tab>
+"
+
+if exists("neovim_dot_app")
+    call MacMenu("Window.Toggle Full Screen", "")
+    nnoremap <D-f> :Ag<Space>
+    nnoremap <D-S-f> :Ag<Space><C-r><C-w><CR>
+endif
+
+nnoremap <leader>g :!open "http://www.google.com/search?ie=UTF-8&oe=UTF-8&sourceid=navclient&gfns=1&q=<C-r><C-w>"<CR>
+
+if exists("neovim_dot_app")
+    imap <S-D-e> <plug>(emmet-expand-abbr)
+endif
+command! FZFMru call fzf#run({
+            \ 'source':  reverse(s:all_files()),
+            \ 'sink':    'edit',
+            \ 'options': '-m -x +s',
+            \ 'down':    '40%' })
+
+function! s:all_files()
+    return extend(
+                \ filter(copy(v:oldfiles),
+                \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/'"),
+                \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
+endfunction
+
+let b:surround_99 = "/* \r */"
 
 " tnoremap <Esc> <C-\><C-n>
 

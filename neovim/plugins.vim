@@ -5,6 +5,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'jiangmiao/auto-pairs'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-sleuth'
     Plug 'scrooloose/nerdcommenter'
     let g:NERDSpaceDelims = 1
     let g:NERDCreateDefaultMappings = 0
@@ -12,8 +13,11 @@ call plug#begin('~/.vim/plugged')
     Plug 'tmhedberg/matchit'
     Plug 'airblade/vim-gitgutter'
     let g:gitgutter_map_keys = 0
-    Plug 'junegunn/fzf'
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
     Plug 'mattn/emmet-vim'
+    let g:ackprg = 'ag --nogroup --nocolor --column'
+    let g:ack_autoclose = 1
 
     if executable('ag')
         let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
@@ -68,6 +72,7 @@ call plug#begin('~/.vim/plugged')
     let g:airline#extensions#bufferline#enabled = 1
     let g:airline#extensions#tabline#show_tabs = 0
     let g:airline#extensions#tabline#enabled = 1
+    let g:airline#extensions#tabline#buffer_idx_mode = 1
     let g:airline_left_sep=''
     let g:airline_right_sep=''
 
@@ -83,6 +88,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'plasticboy/vim-markdown'
     Plug 'posva/vim-vue'
     Plug 'evidens/vim-twig'
+    Plug 'mxw/vim-jsx'
     Plug 'pangloss/vim-javascript'
     let g:javascript_enable_domhtmlcss=1
     Plug 'sekel/vim-vue-syntastic'

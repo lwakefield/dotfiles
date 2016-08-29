@@ -10,6 +10,7 @@ plugins=(git autojump)
 # User configuration
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 source $ZSH/oh-my-zsh.sh
+export CLICOLOR=1
 export TERM="xterm-256color"
 export ANDROID_HOME=/usr/local/opt/android-sdk
 
@@ -23,9 +24,8 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # Base16 Shell
-BASE16_LIGHT_SHELL="$HOME/.config/base16-shell/base16-paraiso.light.sh"
-BASE16_DARK_SHELL="$HOME/.config/base16-shell/base16-paraiso.dark.sh"
-[[ -s $BASE16_DARK_SHELL ]] && source $BASE16_DARK_SHELL
+BASE16_SHELL="$HOME/.config/base16-shell/scripts/base16-paraiso.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
 defaults write NSGlobalDomain KeyRepeat -int 0
 
