@@ -19,8 +19,11 @@
         create: true
         force: true
         path: neovim/plugins.vim
-    ~/.zshrc: 
+    ~/.zshrc:
         path: zshrc
+        force: true
+    ~/.ctags:
+        path: ctags
         force: true
 
 - shell:
