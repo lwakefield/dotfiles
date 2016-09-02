@@ -3,6 +3,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'vim-airline/vim-airline-themes'
     Plug 'honza/vim-snippets'
     Plug 'jiangmiao/auto-pairs'
+    Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-sleuth'
@@ -16,8 +17,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
     Plug 'mattn/emmet-vim'
-    let g:ackprg = 'ag --nogroup --nocolor --column'
-    let g:ack_autoclose = 1
 
     if executable('ag')
         let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'

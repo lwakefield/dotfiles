@@ -62,14 +62,13 @@ autocmd! bufwritepost ~/.config/nvim/plugins.vim source ~/.config/nvim/init.vim
 " Plugins
 nmap <leader>c <plug>NERDCommenterToggle<CR>
 vmap <leader>c <plug>NERDCommenterToggle<CR>
-noremap <leader>f :Autoformat<CR>
-vmap <leader>f :Autoformat<CR>
 nmap <leader>p :Files<CR>
-
+nmap <leader>r :BTags<CR>
 if exists("neovim_dot_app")
     call MacMenu("File.Print", "")
     nmap <D-p> :Files<CR>
-    nmap <D-S-p> :Buffers<CR>
+    nmap <D-r> :BTags<CR>
+    nmap <D-S-p> :History<CR>
     nmap <D-/> <plug>NERDCommenterToggle<CR>
     vmap <D-/> <plug>NERDCommenterToggle<CR>
 endif
@@ -101,18 +100,21 @@ if exists("neovim_dot_app")
 endif
 
 " Add control mappings, they are faster for multiple actions
-nmap <C-Left> :bprev<CR>
-nmap <C-Right> :bnext<CR>
+nmap <leader>[ :bprev<CR>
+nmap <leader>] :bnext<CR>
 nmap <leader><leader> <C-^>
 nmap <leader>q :bd<CR>
 nmap <leader>Q :bd!<CR>
 if exists("neovim_dot_app")
     nmap <D-Left> :bprev<CR>
     nmap <D-Right> :bnext<CR>
+    nmap <D-[> :bprev<CR>
+    nmap <D-]> :bnext<CR>
     call MacMenu("Window.Close Tab", "")
     call MacMenu("Window.Close Other Tabs", "")
     nnoremap <D-w> :bd<CR>
     nnoremap <D-S-w> :bd!<CR>
+    tnoremap <D-S-w> <C-\><C-n>:bd!<CR>
 endif
 
 nmap <leader>h :set hlsearch! hlsearch?<CR>
@@ -147,13 +149,17 @@ nmap :W :w<CR>
 " nmap <leader>b :ls<CR>:b <c-z><s-tab>
 "
 
+nmap <leader>s *#
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+
+nmap <leader>f :Ag<Space>
 if exists("neovim_dot_app")
     call MacMenu("Window.Toggle Full Screen", "")
     nnoremap <D-f> :Ag<Space>
     nnoremap <D-S-f> :Ag<Space><C-r><C-w><CR>
 endif
 
-nnoremap <leader>g :!open "http://www.google.com/search?ie=UTF-8&oe=UTF-8&sourceid=navclient&gfns=1&q=<C-r><C-w>"<CR>
+nnoremap <leader>g :!open "http://www.google.com/search?ie=UTF-8&oe=UTF-8&sourceid=navclient&gfns=1&q=<C-r><C-w>"<CR><CR>
 
 if exists("neovim_dot_app")
     imap <S-D-e> <plug>(emmet-expand-abbr)
