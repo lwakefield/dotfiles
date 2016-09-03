@@ -2,7 +2,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'chriskempson/base16-vim'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'honza/vim-snippets'
-    Plug 'jiangmiao/auto-pairs'
+    Plug 'Raimondi/delimitMate'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-repeat'
