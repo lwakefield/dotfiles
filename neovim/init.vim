@@ -38,7 +38,7 @@
 " 25. various
 
 set runtimepath+=~/.config/nvim/
-let mapleader = ","
+let mapleader = " "
 
 runtime defaults.vim
 runtime plugins.vim
