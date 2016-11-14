@@ -17,6 +17,13 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
     Plug 'mattn/emmet-vim'
+    Plug 'davidhalter/jedi-vim'
+    let g:jedi#goto_assignments_command = ""
+    let g:jedi#goto_definitions_command = '<c-]>'
+    let g:jedi#documentation_command = ""
+    let g:jedi#usages_command = ""
+    let g:jedi#completions_command = ""
+    let g:jedi#rename_command = ""
 
     if executable('ag')
         let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
@@ -40,7 +47,7 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'SirVer/ultisnips'
     let g:UltiSnipsUsePythonVersion = 3
-    let g:UltiSnipsExpandTrigger = "<C-Space>"
+    let g:UltiSnipsExpandTrigger = "<c-@>"
     autocmd FileType vue UltiSnipsAddFiletypes javascript
 
     Plug 'Shougo/deoplete.nvim'
@@ -58,6 +65,12 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'benekastah/neomake'
     autocmd! BufWritePost,BufEnter * Neomake
+    let g:neomake_scss_enabled_makers = ['stylelint']
+    let g:neomake_scss_stylelint_maker = {
+                \ 'exe': 'stylelint',
+                \ 'args': ['--syntax', 'scss'],
+                \ 'errorformat': '\ %l:%c\ %*[\✖]\ %m'
+                \ }
     let g:neomake_javascript_enabled_makers = ['eslint']
     let g:neomake_vue_eslint_maker = {
                 \ 'args': ['--plugin', 'html', '-f', 'compact'],

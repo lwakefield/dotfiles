@@ -43,18 +43,21 @@ let mapleader = " "
 runtime defaults.vim
 runtime plugins.vim
 
+set scrolloff=2
 set t_Co=256
 let base16colorspace=256
-colorscheme base16-paraiso
+colorscheme base16-harmonic16-dark
+
+set autoread
+let g:netrw_liststyle=3
+let g:netrw_banner=0
 
 " Prefer control mappings for multiple actions
 " Otherwise <leader>KEY is faster
 " Prefer function keys for meta vim actions
-noremap <F4> :e ~/.config/nvim/init.vim<CR>
-noremap <leader>dd :e ~/.config/nvim/init.vim<CR>
-noremap <leader>dz :e ~/.zshrc<CR>
-noremap <leader>dp :e ~/.config/nvim/plugins.vim<CR>
-noremap <F5> :PlugInstall<CR>
+noremap <leader>edd :e ~/.config/nvim/init.vim<CR>
+noremap <leader>edz :e ~/.zshrc<CR>
+noremap <leader>edp :e ~/.config/nvim/plugins.vim<CR>
 autocmd! bufwritepost ~/.config/nvim/init.vim source ~/.config/nvim/init.vim
 autocmd! bufwritepost ~/.config/nvim/defaults.vim source ~/.config/nvim/init.vim
 autocmd! bufwritepost ~/.config/nvim/plugins.vim source ~/.config/nvim/init.vim
@@ -103,8 +106,9 @@ endif
 nmap <leader>[ :bprev<CR>
 nmap <leader>] :bnext<CR>
 nmap <leader><leader> <C-^>
-nmap <leader>q :bd<CR>
-nmap <leader>Q :bd!<CR>
+nmap <leader>w :bd<CR>
+nmap <leader>W :bd <c-a><CR>
+nmap <leader>!w :bd!<CR>
 if exists("neovim_dot_app")
     nmap <D-Left> :bprev<CR>
     nmap <D-Right> :bnext<CR>
@@ -122,14 +126,17 @@ nmap <leader>v :normal! v/[\(\){}\[\]]<CR>%
 nmap <leader>V :normal! V$?[\(\){}\[\]]<CR>%
 nmap <leader>a ggVG
 vmap <leader>y :y*<CR>
-nmap <leader>o a<CR><esc>
-nnoremap <leader>l `[v`]
+nmap <leader>d yyp
+nmap <leader>et :e ~/notes/todo.md<CR>
+nmap <leader>en :e ~/notes/notes.md<CR>
+nmap <leader>z :set foldlevel=
 
 " Overrides
 nmap Q <nop>
 nmap H ^
 nmap L $
-nmap D dd
+vmap H ^
+vmap L $
 nmap <tab> >>
 nmap <s-tab> <<
 vmap <tab> >gv
@@ -146,13 +153,23 @@ imap :w <Esc>:w<CR>
 inoremap <Esc> <Esc>l
 vmap :w <Esc>:w<CR>
 nmap :W :w<CR>
-" nmap <leader>b :ls<CR>:b <c-z><s-tab>
-"
+nmap <leader>s :set hlsearch<CR> *#
 
-nmap <leader>s *#
-vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+function! CdHist()
+  let max  = histnr(':')
+  let fmt  = ' %'.len(string(max)).'d '
+  let list = filter(map(range(1, max), 'histget(":", - v:val)'), '!empty(v:val) && v:val =~ "^cd .*"')
+  return map(list, 'matchlist(v:val, "^cd \\(.*\\)")[1]')
+endfunction
+
+nmap <leader>o :call fzf#run({
+            \ 'source': CdHist(),
+            \ 'sink': 'cd',
+            \ 'down': '40%',
+            \ })<cr>
 
 nmap <leader>f :Ag<Space>
+nnoremap <leader>F :Ag<Space><C-r><C-w><CR>
 if exists("neovim_dot_app")
     call MacMenu("Window.Toggle Full Screen", "")
     nnoremap <D-f> :Ag<Space>

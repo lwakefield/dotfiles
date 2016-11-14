@@ -24,7 +24,7 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # Base16 Shell
-BASE16_SHELL="$HOME/.config/base16-shell/scripts/base16-paraiso.sh"
+BASE16_SHELL="$HOME/.config/base16-shell/scripts/base16-harmonic16-dark.sh"
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
 defaults write NSGlobalDomain KeyRepeat -int 0
@@ -43,7 +43,9 @@ alias subl='/Applications/Sublime\ Text.app/Contents/MacOS/Sublime\ Text'
 
 alias rand-str='env LC_CTYPE=C tr -dc "a-zA-Z0-9-_\$\?" < /dev/urandom | head -c 64'
 alias list='du -sh ./* | gsort -h'
-
+alias vu='vagrant up && vagrant ssh'
+alias vs='vagrant ssh'
+alias vd='vagrant halt'
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
