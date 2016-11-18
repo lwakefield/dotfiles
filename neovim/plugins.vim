@@ -17,13 +17,19 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
     Plug 'mattn/emmet-vim'
-    Plug 'davidhalter/jedi-vim'
-    let g:jedi#goto_assignments_command = ""
-    let g:jedi#goto_definitions_command = '<c-]>'
-    let g:jedi#documentation_command = ""
-    let g:jedi#usages_command = ""
-    let g:jedi#completions_command = ""
-    let g:jedi#rename_command = ""
+    " Plug 'davidhalter/jedi-vim'
+    " let g:jedi#goto_assignments_command = ""
+    " let g:jedi#goto_definitions_command = '<c-]>'
+    " let g:jedi#documentation_command = ""
+    " let g:jedi#usages_command = ""
+    " let g:jedi#completions_command = ""
+    " let g:jedi#rename_command = ""
+    Plug 'tpope/vim-dispatch'
+    Plug 'christoomey/vim-tmux-navigator'
+    Plug 'lifepillar/vim-mucomplete'
+    let g:mucomplete#chains = {}
+    let g:mucomplete#chains.default = ['file', 'omni', 'keyn', 'c-n', 'dict']
+    Plug 'jpalardy/vim-slime'
 
     if executable('ag')
         let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
@@ -50,12 +56,12 @@ call plug#begin('~/.vim/plugged')
     let g:UltiSnipsExpandTrigger = "<c-@>"
     autocmd FileType vue UltiSnipsAddFiletypes javascript
 
-    Plug 'Shougo/deoplete.nvim'
-    " Show menu when there is only one match
-    " Show longest match first
-    let g:deoplete#enable_at_startup = 1
-    " let g:deoplete#disable_auto_complete=1
-    let g:deoplete#enable_smart_case = 1
+    " Plug 'Shougo/deoplete.nvim'
+    " " Show menu when there is only one match
+    " " Show longest match first
+    " let g:deoplete#enable_at_startup = 1
+    " " let g:deoplete#disable_auto_complete=1
+    " let g:deoplete#enable_smart_case = 1
 
     " Below are plugins with config, in no particular order
     Plug 'Chiel92/vim-autoformat'

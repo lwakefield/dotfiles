@@ -66,6 +66,7 @@ autocmd! bufwritepost ~/.config/nvim/plugins.vim source ~/.config/nvim/init.vim
 nmap <leader>c <plug>NERDCommenterToggle<CR>
 vmap <leader>c <plug>NERDCommenterToggle<CR>
 nmap <leader>p :Files<CR>
+nmap <leader>P :History<CR>
 nmap <leader>r :BTags<CR>
 if exists("neovim_dot_app")
     call MacMenu("File.Print", "")
@@ -152,8 +153,27 @@ vnoremap <C-D-Down> djP`[V`]
 imap :w <Esc>:w<CR>
 inoremap <Esc> <Esc>l
 vmap :w <Esc>:w<CR>
-nmap :W :w<CR>
+nmap :W :w
+cmap wq w
+cmap qw w
 nmap <leader>s :set hlsearch<CR> *#
+nmap q: :q
+
+" nnoremap <c-j> <c-w>j
+" nnoremap <c-k> <c-w>k
+" nnoremap <c-h> <c-w>h
+" nnoremap <c-l> <c-w>l
+inoremap jk <esc>
+
+" Sooper simple tab completion
+" function! Tab_Or_Complete()
+"   if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
+"     return "\<C-N>"
+"   else
+"     return "\<Tab>"
+"   endif
+" endfunction
+" inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
 
 function! CdHist()
   let max  = histnr(':')
@@ -182,20 +202,18 @@ if exists("neovim_dot_app")
     imap <S-D-e> <plug>(emmet-expand-abbr)
 endif
 command! FZFMru call fzf#run({
-            \ 'source':  reverse(s:all_files()),
-            \ 'sink':    'edit',
-            \ 'options': '-m -x +s',
-            \ 'down':    '40%' })
+\ 'source':  reverse(s:all_files()),
+\ 'sink':    'edit',
+\ 'options': '-m -x +s',
+\ 'down':    '40%' })
 
 function! s:all_files()
-    return extend(
-                \ filter(copy(v:oldfiles),
-                \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/'"),
-                \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
+  return extend(
+  \ filter(copy(v:oldfiles),
+  \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/'"),
+  \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
 endfunction
 
 let b:surround_99 = "/* \r */"
-
-" tnoremap <Esc> <C-\><C-n>
 
 iabbrev lgo log
