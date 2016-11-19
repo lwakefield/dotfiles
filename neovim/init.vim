@@ -59,6 +59,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'vim-scripts/YankRing.vim'
+    Plug 'michaeljsmith/vim-indent-object'
 
     " Syntaxes
     Plug 'kchmck/vim-coffee-script'
@@ -93,7 +94,6 @@ endif
 let g:airline#extensions#bufferline#enabled = 1
 let g:airline#extensions#tabline#show_tabs = 0
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:gitgutter_map_keys = 0
@@ -165,15 +165,6 @@ nnoremap <leader>F :Ag<Space><C-r><C-w><CR>
 nnoremap <leader>w :bd<CR>
 nnoremap <leader>W :bd <c-a><CR>
 nnoremap <leader>!w :bd!<CR>
-nnoremap <leader>1 <Plug>AirlineSelectTab1
-nnoremap <leader>2 <Plug>AirlineSelectTab2
-nnoremap <leader>3 <Plug>AirlineSelectTab3
-nnoremap <leader>4 <Plug>AirlineSelectTab4
-nnoremap <leader>5 <Plug>AirlineSelectTab5
-nnoremap <leader>6 <Plug>AirlineSelectTab6
-nnoremap <leader>7 <Plug>AirlineSelectTab7
-nnoremap <leader>8 <Plug>AirlineSelectTab8
-nnoremap <leader>9 <Plug>AirlineSelectTab9
 nnoremap <leader>[ :bprev<CR>
 nnoremap <leader>] :bnext<CR>
 nnoremap <leader><leader> <C-^>
