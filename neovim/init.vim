@@ -21,7 +21,8 @@ set laststatus=2
 set hidden
 set mouse=a
 set backspace=indent,eol,start
-set completeopt=longest,menuone,noinsert,noselect
+set completeopt=longest,menu,menuone,noinsert,noselect
+set shortmess+=c
 set expandtab
 set tabstop=4
 set shiftwidth=4
@@ -185,6 +186,8 @@ vnoremap <leader>y :y*<CR>
 nnoremap <leader>z :set foldlevel=
 nnoremap <leader>h :set hlsearch! hlsearch?<CR>
 nnoremap <leader>s :set hlsearch<CR> *#
+inoremap <c-a> <esc>I
+inoremap <c-e> <esc>A
 " inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
 " commonly editted files
 nnoremap <leader>edd :e ~/.config/nvim/init.vim<CR>
