@@ -58,6 +58,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-surround'
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
+    Plug 'vim-scripts/YankRing.vim'
 
     " Syntaxes
     Plug 'kchmck/vim-coffee-script'
