@@ -118,6 +118,7 @@ let g:neomake_vue_enabled_makers = ['eslint']
 let g:UltiSnipsUsePythonVersion = 3
 let g:UltiSnipsExpandTrigger = "<c-@>"
 let g:slime_no_mappings = 1
+let g:slime_target = 'tmux'
 let b:surround_99 = "/* \r */"
 
 " autocmds
