@@ -1,6 +1,7 @@
 set nocompatible
 filetype off
 set pastetoggle=<f12>
+set inccommand=split
 set incsearch
 set ignorecase
 set smartcase
@@ -22,6 +23,7 @@ set hidden
 set mouse=a
 set backspace=indent,eol,start
 set completeopt=longest,menu,menuone,noinsert,noselect
+set complete=.,w,b,u
 set shortmess+=c
 set expandtab
 set tabstop=4
@@ -48,9 +50,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'jpalardy/vim-slime'
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
-    Plug 'lifepillar/vim-mucomplete'
-    Plug 'scrooloose/nerdcommenter'
+    Plug 'junegunn/vim-easy-align'
+    Plug 'ludovicchabant/vim-gutentags'
     Plug 'tmhedberg/matchit' " % for html tags
+    Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-dispatch'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-repeat'
@@ -62,23 +65,24 @@ call plug#begin('~/.vim/plugged')
     Plug 'michaeljsmith/vim-indent-object'
 
     " Syntaxes
-    Plug 'kchmck/vim-coffee-script'
     Plug 'StanAngeloff/php.vim'
-    Plug 'shawncplus/phpcomplete.vim'
-    Plug 'groenewege/vim-less'
     Plug 'cakebaker/scss-syntax.vim'
-    Plug 'othree/html5.vim'
     Plug 'derekwyatt/vim-scala'
-    Plug 'godlygeek/tabular'
-    Plug 'plasticboy/vim-markdown'
-    Plug 'posva/vim-vue'
     Plug 'evidens/vim-twig'
-    Plug 'mxw/vim-jsx'
-    Plug 'pangloss/vim-javascript'
-    let g:javascript_enable_domhtmlcss=1
-    Plug 'sekel/vim-vue-syntastic'
     Plug 'fatih/vim-go'
     Plug 'flowtype/vim-flow'
+    Plug 'godlygeek/tabular'
+    Plug 'groenewege/vim-less'
+    Plug 'kchmck/vim-coffee-script'
+    Plug 'lepture/vim-jinja'
+    Plug 'mxw/vim-jsx'
+    Plug 'othree/html5.vim'
+    Plug 'pangloss/vim-javascript'
+    let g:javascript_enable_domhtmlcss=1
+    Plug 'plasticboy/vim-markdown'
+    Plug 'posva/vim-vue'
+    Plug 'sekel/vim-vue-syntastic'
+    Plug 'shawncplus/phpcomplete.vim'
 
 call plug#end()
 
@@ -97,9 +101,6 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:gitgutter_map_keys = 0
-let g:NERDSpaceDelims = 1
-let g:NERDCreateDefaultMappings = 0
-let g:NERDDefaultAlign = 'left'
 let g:mucomplete#chains = {}
 let g:mucomplete#chains.default = ['file', 'omni', 'keyn', 'c-n', 'dict']
 let g:neomake_scss_enabled_makers = ['stylelint']
@@ -144,8 +145,6 @@ nnoremap <esc> <nop>
 inoremap <c-c> <esc>l
 vnoremap <c-c> <esc>
 nnoremap <c-c> <esc>
-
-" Plugins
 " Because I can't type for shit...
 inoremap :w <Esc>:w<CR>
 vnoremap :w <Esc>:w<CR>
@@ -154,31 +153,36 @@ cnoremap wq w
 cnoremap qw w
 nnoremap q: :q
 " plugins...
-nnoremap <leader>c <plug>NERDCommenterToggle<CR>
-vnoremap <leader>c <plug>NERDCommenterToggle<CR>
+nmap <leader>c gcc
+vmap <leader>c gc
+nnoremap <leader>g :Gbrowse<CR>
 nnoremap <leader>p :Files<CR>
-nnoremap <leader>P :History<CR>
+nnoremap <leader><leader> :Buffers<CR>
 nnoremap <leader>r :BTags<CR>
 nnoremap <leader>o :call fzf#run({'source': CdHist(), 'sink': 'cd', 'down': '40%'})<cr>
 nnoremap <leader>f :Ag<Space>
 nnoremap <leader>F :Ag<Space><C-r><C-w><CR>
+" send the last command
+nmap <leader>t :SlimeSend1 <c-v><c-p><c-v><cr><cr>
+xmap <leader>l <Plug>(EasyAlign)
 " buffer nav
 nnoremap <leader>w :bd<CR>
 nnoremap <leader>W :bd <c-a><CR>
 nnoremap <leader>!w :bd!<CR>
 nnoremap <leader>[ :bprev<CR>
 nnoremap <leader>] :bnext<CR>
-nnoremap <leader><leader> <C-^>
 " utility belt
 nnoremap <leader>n :set hlsearch<cr>#*cgn
 vnoremap <leader>n <esc>:set hlsearch<cr>gvy/<C-R>"<CR>Ncgn
 nnoremap <leader>v :normal! v/[\(\){}\[\]]<CR>%
 nnoremap <leader>V :normal! V$?[\(\){}\[\]]<CR>%
+vnoremap <leader>v :normal! v/[\(\){}\[\]]<CR>%
+vnoremap <leader>V :normal! V$?[\(\){}\[\]]<CR>%
 nnoremap <leader>a ggVG
 vnoremap <leader>y :y*<CR>
 nnoremap <leader>z :set foldlevel=
 nnoremap <leader>h :set hlsearch! hlsearch?<CR>
-nnoremap <leader>s :set hlsearch<CR> *#
+nnoremap <leader>s :set hlsearch<CR> #*
 inoremap <c-a> <esc>I
 inoremap <c-e> <esc>A
 " inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
@@ -190,6 +194,7 @@ nnoremap <leader>et :e ~/notes/todo.md<CR>
 nnoremap <leader>en :e ~/notes/notes.md<CR>
 
 iabbrev lgo log
+iabbrev #! #!/usr/bin/env
 
 function! CdHist()
   let max  = histnr(':')
@@ -198,11 +203,50 @@ function! CdHist()
   return map(list, 'matchlist(v:val, "^cd \\(.*\\)")[1]')
 endfunction
 
+" Hoisted from https://github.com/maxboisvert/vim-simple-complete
+fun! InitAutoComplete()
+    if exists("g:loaded_vim_simple_complete")
+        return
+    endif
+    let g:loaded_vim_simple_complete = 1
+
+    autocmd InsertCharPre * call s:TypeComplete()
+    inoremap <expr> <Tab> <SID>TabComplete(0)
+    inoremap <expr> <S-Tab> <SID>TabComplete(1)
+
+    fun! s:TypeComplete()
+        if v:char =~ '\K'
+            \ && getline('.')[col('.') - 4] !~ '\K'
+            \ && getline('.')[col('.') - 3] =~ '\K'
+            \ && getline('.')[col('.') - 2] =~ '\K'
+            \ && getline('.')[col('.') - 1] !~ '\K'
+
+            call feedkeys("\<C-N>", 'n')
+        end
+    endfun
+
+    fun! s:TabComplete(reverse)
+        if pumvisible()
+            return a:reverse ? "\<C-P>" : "\<C-N>"
+        else
+            return "\<Tab>"
+        endif
+    endfun
+endfun
+call InitAutoComplete()
+"
 " Sooper simple tab completion, I want to keep this around even though I don't
 " use it
 function! Tab_Or_Complete()
   if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
     return "\<C-N>"
+  else
+    return "\<Tab>"
+  endif
+endfunction
+function! Shift_Tab_Or_Complete()
+  if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
+    return "\<C-P>"
   else
     return "\<Tab>"
   endif
