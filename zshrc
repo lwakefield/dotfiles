@@ -43,9 +43,23 @@ alias subl='/Applications/Sublime\ Text.app/Contents/MacOS/Sublime\ Text'
 
 alias rand-str='env LC_CTYPE=C tr -dc "a-zA-Z0-9-_\$\?" < /dev/urandom | head -c 64'
 alias list='du -sh ./* | gsort -h'
-alias vu='vagrant up && vagrant ssh'
-alias vs='vagrant ssh'
+alias vu='vagrant up'
 alias vd='vagrant halt'
+alias json='python -m json.tool'
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# https://gist.github.com/hlissner/db74d23fc00bed81ff62
+search_replace() {
+    ag -l $1 | xargs sed -i -e "s/$1/$2/g"
+}
+alias sr='search_replace'
+
+# https://robots.thoughtbot.com/cding-to-frequently-used-directories-in-zsh
+_ag() {
+  if (( CURRENT == 2 )); then
+    compadd $(cut -f 1 .git/tags tmp/tags tags 2>/dev/null | grep -v '!_TAG')
+  fi
+}
+compdef _ag ag

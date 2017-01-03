@@ -23,7 +23,7 @@ set hidden
 set mouse=a
 set backspace=indent,eol,start
 set completeopt=longest,menu,menuone,noinsert,noselect
-set complete=.,w,b,u
+set complete=.,w,b,u,t
 set shortmess+=c
 set expandtab
 set tabstop=4
@@ -38,20 +38,26 @@ set wildcharm=<c-z>
 set scrolloff=2
 set t_Co=256
 set autoread
+set statusline=%F%=[%L][%{&ff}]%y[%p%%][%04l,%04v]
+set undofile
+set undodir=~/.vim/undodir
 
 call plug#begin('~/.vim/plugged')
     Plug 'Raimondi/delimitMate'
     Plug 'SirVer/ultisnips'
     Plug 'airblade/vim-gitgutter'
     Plug 'benekastah/neomake'
+    Plug 'brooth/far.vim'
     Plug 'chriskempson/base16-vim'
     Plug 'christoomey/vim-tmux-navigator'
+    Plug 'haya14busa/incsearch.vim'
     Plug 'honza/vim-snippets'
     Plug 'jpalardy/vim-slime'
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
     Plug 'junegunn/vim-easy-align'
     Plug 'ludovicchabant/vim-gutentags'
+    Plug 'michaeljsmith/vim-indent-object'
     Plug 'tmhedberg/matchit' " % for html tags
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-dispatch'
@@ -59,10 +65,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-sleuth' " autoset indentation options
     Plug 'tpope/vim-surround'
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
+    Plug 'tweekmonster/fzf-filemru'
+    " Plug 'vim-airline/vim-airline'
+    " Plug 'vim-airline/vim-airline-themes'
     Plug 'vim-scripts/YankRing.vim'
-    Plug 'michaeljsmith/vim-indent-object'
 
     " Syntaxes
     Plug 'StanAngeloff/php.vim'
@@ -95,12 +101,13 @@ colorscheme base16-harmonic16-dark
 if executable('ag')
     let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
 endif
-let g:airline#extensions#bufferline#enabled = 1
-let g:airline#extensions#tabline#show_tabs = 0
-let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#bufferline#enabled = 1
+" let g:airline#extensions#tabline#show_tabs = 0
+" let g:airline#extensions#tabline#enabled = 1
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:gitgutter_map_keys = 0
+let g:gutentags_exclude = ['node_modules', 'dist_client', 'dist_server']
 let g:mucomplete#chains = {}
 let g:mucomplete#chains.default = ['file', 'omni', 'keyn', 'c-n', 'dict']
 let g:neomake_scss_enabled_makers = ['stylelint']
@@ -126,6 +133,7 @@ let b:surround_99 = "/* \r */"
 autocmd FileType vue UltiSnipsAddFiletypes javascript
 autocmd! BufWritePost,BufEnter * Neomake
 autocmd! bufwritepost ~/.config/nvim/init.vim source ~/.config/nvim/init.vim
+" autocmd! bufwritepost ~/.config/nvim/init.vim call AirlineRefresh()
 
 " Opinionated overrides
 nnoremap Q <nop>
@@ -156,22 +164,28 @@ nnoremap q: :q
 nmap <leader>c gcc
 vmap <leader>c gc
 nnoremap <leader>g :Gbrowse<CR>
-nnoremap <leader>p :Files<CR>
-nnoremap <leader><leader> :Buffers<CR>
-nnoremap <leader>r :BTags<CR>
+nnoremap <leader>p :FilesMru --tiebreak=end<cr>
+" nnoremap <leader>p :call fzf#vim#files('.', {'options': '--reverse'})<CR>
+nnoremap <leader><leader> :call fzf#vim#buffers({'options': '--reverse'})<CR>
+nnoremap <leader>r :call fzf#vim#buffer_tags('', {'options': '--reverse'})<CR>
 nnoremap <leader>o :call fzf#run({'source': CdHist(), 'sink': 'cd', 'down': '40%'})<cr>
 nnoremap <leader>f :Ag<Space>
 nnoremap <leader>F :Ag<Space><C-r><C-w><CR>
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
 " send the last command
-nmap <leader>t :SlimeSend1 <c-v><c-p><c-v><cr><cr>
+nmap <leader>m :SlimeSend1 <c-v><c-p><c-v><cr><cr>
 xmap <leader>l <Plug>(EasyAlign)
 " buffer nav
-nnoremap <leader>w :bd<CR>
-nnoremap <leader>W :bd <c-a><CR>
+" nnoremap <leader>w :bd<CR>
+" nnoremap <leader>W :bd <c-a><CR>
 nnoremap <leader>!w :bd!<CR>
 nnoremap <leader>[ :bprev<CR>
 nnoremap <leader>] :bnext<CR>
 " utility belt
+nnoremap <leader>b :%s/<c-r><c-w>//g<left><left>
+vnoremap <leader>b :s/<c-r><c-w>//g<left><left>
 nnoremap <leader>n :set hlsearch<cr>#*cgn
 vnoremap <leader>n <esc>:set hlsearch<cr>gvy/<C-R>"<CR>Ncgn
 nnoremap <leader>v :normal! v/[\(\){}\[\]]<CR>%
@@ -216,10 +230,8 @@ fun! InitAutoComplete()
 
     fun! s:TypeComplete()
         if v:char =~ '\K'
-            \ && getline('.')[col('.') - 4] !~ '\K'
-            \ && getline('.')[col('.') - 3] =~ '\K'
-            \ && getline('.')[col('.') - 2] =~ '\K'
             \ && getline('.')[col('.') - 1] !~ '\K'
+            \ && !pumvisible()
 
             call feedkeys("\<C-N>", 'n')
         end
@@ -234,6 +246,7 @@ fun! InitAutoComplete()
     endfun
 endfun
 call InitAutoComplete()
+
 "
 " Sooper simple tab completion, I want to keep this around even though I don't
 " use it
