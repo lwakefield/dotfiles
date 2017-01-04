@@ -224,16 +224,13 @@ fun! InitAutoComplete()
     endif
     let g:loaded_vim_simple_complete = 1
 
-    autocmd InsertCharPre * call s:TypeComplete()
+    autocmd TextChangedI * call s:TypeComplete()
     inoremap <expr> <Tab> <SID>TabComplete(0)
     inoremap <expr> <S-Tab> <SID>TabComplete(1)
 
     fun! s:TypeComplete()
-        if v:char =~ '\K'
-            \ && getline('.')[col('.') - 1] !~ '\K'
-            \ && !pumvisible()
-
-            call feedkeys("\<C-N>", 'n')
+        if getline('.')[col('.') - 2] =~ '\K'
+            call feedkeys("\<C-N>")
         end
     endfun
 
