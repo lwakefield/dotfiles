@@ -217,47 +217,14 @@ function! CdHist()
   return map(list, 'matchlist(v:val, "^cd \\(.*\\)")[1]')
 endfunction
 
-" Hoisted from https://github.com/maxboisvert/vim-simple-complete
-fun! InitAutoComplete()
-    if exists("g:loaded_vim_simple_complete")
-        return
-    endif
-    let g:loaded_vim_simple_complete = 1
-
-    autocmd TextChangedI * call s:TypeComplete()
-    inoremap <expr> <Tab> <SID>TabComplete(0)
-    inoremap <expr> <S-Tab> <SID>TabComplete(1)
-
-    fun! s:TypeComplete()
-        if getline('.')[col('.') - 2] =~ '\K'
-            call feedkeys("\<C-N>")
-        end
-    endfun
-
-    fun! s:TabComplete(reverse)
-        if pumvisible()
-            return a:reverse ? "\<C-P>" : "\<C-N>"
-        else
-            return "\<Tab>"
-        endif
-    endfun
+augroup autocomplete
+    autocmd!
+    autocmd TextChangedI * call TypeComplete()
+augroup end
+inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
+inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<tab>'
+fun! TypeComplete()
+  if getline('.')[col('.') - 2] =~ '\K' && getline('.')[col('.') - 1] !~ '\K'
+    call feedkeys("\<c-n>")
+  end
 endfun
-call InitAutoComplete()
-
-"
-" Sooper simple tab completion, I want to keep this around even though I don't
-" use it
-function! Tab_Or_Complete()
-  if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
-    return "\<C-N>"
-  else
-    return "\<Tab>"
-  endif
-endfunction
-function! Shift_Tab_Or_Complete()
-  if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
-    return "\<C-P>"
-  else
-    return "\<Tab>"
-  endif
-endfunction
