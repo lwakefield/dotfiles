@@ -41,6 +41,7 @@ set autoread
 set statusline=%F%=[%L][%{&ff}]%y[%p%%][%04l,%04v]
 set undofile
 set undodir=~/.vim/undodir
+set clipboard=unnamed
 
 call plug#begin('~/.vim/plugged')
     Plug 'Raimondi/delimitMate'
