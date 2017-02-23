@@ -1,48 +1,3 @@
-set nocompatible
-filetype off
-set pastetoggle=<f12>
-set inccommand=split
-set incsearch
-set ignorecase
-set smartcase
-set wrap
-set rnu
-set nu
-set listchars=tab:>-,trail:~
-set list
-set background=dark
-syntax enable
-set hlsearch
-set spell
-set colorcolumn=81,101
-set cursorline
-filetype plugin indent on
-set laststatus=2
-" lets you change buffers w/o a write
-set hidden
-set mouse=a
-set backspace=indent,eol,start
-set completeopt=longest,menu,menuone,noinsert,noselect
-set complete=.,w,b,u,t
-set shortmess+=c
-set expandtab
-set tabstop=4
-set shiftwidth=4
-set autoindent
-" round indentation to multiple of shiftwidth
-set shiftround
-set foldmethod=indent
-set foldlevel=20
-set noswapfile
-set wildcharm=<c-z>
-set scrolloff=2
-set t_Co=256
-set autoread
-set statusline=%F%=[%L][%{&ff}]%y[%p%%][%04l,%04v]
-set undofile
-set undodir=~/.vim/undodir
-set clipboard=unnamed
-
 call plug#begin('~/.vim/plugged')
     Plug 'Raimondi/delimitMate'
     Plug 'SirVer/ultisnips'
@@ -67,8 +22,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-sleuth' " autoset indentation options
     Plug 'tpope/vim-surround'
     Plug 'tweekmonster/fzf-filemru'
-    " Plug 'vim-airline/vim-airline'
-    " Plug 'vim-airline/vim-airline-themes'
     Plug 'vim-scripts/YankRing.vim'
 
     " Syntaxes
@@ -90,23 +43,75 @@ call plug#begin('~/.vim/plugged')
     Plug 'posva/vim-vue'
     Plug 'sekel/vim-vue-syntastic'
     Plug 'shawncplus/phpcomplete.vim'
-
 call plug#end()
+
+set nocompatible
+filetype off
+set inccommand=split
+set incsearch
+set ignorecase
+set smartcase
+set wrap
+set rnu
+set nu
+set listchars=tab:>-,trail:~
+set list
+set hlsearch
+set spell
+set colorcolumn=81,101
+set cursorline
+filetype plugin indent on
+set noerrorbells
+set visualbell
+" lets you change buffers w/o a write
+set hidden
+set mouse=a
+set backspace=indent,eol,start
+set completeopt=longest,menu,menuone,noinsert,noselect
+set complete=.,w,b,u,t
+set shortmess+=c
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set autoindent
+" round indentation to multiple of shiftwidth
+set shiftround
+set foldmethod=indent
+set foldlevel=20
+set noswapfile
+set wildcharm=<c-z>
+set scrolloff=2
+set t_Co=256
+set autoread
+set undofile
+set undodir=~/.vim/undodir
+set clipboard=unnamed
 
 " Let's get this party started
 let mapleader = " "
 let base16colorspace=256
-colorscheme base16-harmonic16-dark
+colorscheme base16-tomorrow-night
+hi StatusLine ctermfg=1 ctermbg=0
+set laststatus=2
+" This toggles the status line detail level it is up here, because it does some
+" initialization
+let s:show_details = 0
+function! ToggleHiddenAll()
+    if s:show_details  == 0
+        let s:show_details = 1
+        set statusline=%=%F%m\ \ %p%%
+    else
+        let s:show_details = 0
+        set statusline=%F%m%=[%L][%{&ff}]%y[%p%%][%04l,%04v]
+    endif
+endfunction
+call ToggleHiddenAll()
+nnoremap <leader>d :call ToggleHiddenAll()<CR>
 
 " Plugin defaults
 if executable('ag')
     let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
 endif
-" let g:airline#extensions#bufferline#enabled = 1
-" let g:airline#extensions#tabline#show_tabs = 0
-" let g:airline#extensions#tabline#enabled = 1
-let g:airline_left_sep=''
-let g:airline_right_sep=''
 let g:gitgutter_map_keys = 0
 let g:gutentags_exclude = ['node_modules', 'dist_client', 'dist_server']
 let g:mucomplete#chains = {}
@@ -134,7 +139,6 @@ let b:surround_99 = "/* \r */"
 autocmd FileType vue UltiSnipsAddFiletypes javascript
 autocmd! BufWritePost,BufEnter * Neomake
 autocmd! bufwritepost ~/.config/nvim/init.vim source ~/.config/nvim/init.vim
-" autocmd! bufwritepost ~/.config/nvim/init.vim call AirlineRefresh()
 
 " Opinionated overrides
 nnoremap Q <nop>
@@ -166,8 +170,8 @@ nmap <leader>c gcc
 vmap <leader>c gc
 nnoremap <leader>g :Gbrowse<CR>
 nnoremap <leader>p :FilesMru --tiebreak=end<cr>
-" nnoremap <leader>p :call fzf#vim#files('.', {'options': '--reverse'})<CR>
-nnoremap <leader><leader> :call fzf#vim#buffers({'options': '--reverse'})<CR>
+nnoremap <leader><leader> :ls<cr>:b<space>
+nnoremap <leader><cr> :b#<cr>
 nnoremap <leader>r :call fzf#vim#buffer_tags('', {'options': '--reverse'})<CR>
 nnoremap <leader>o :call fzf#run({'source': CdHist(), 'sink': 'cd', 'down': '40%'})<cr>
 nnoremap <leader>f :Ag<Space>
@@ -200,7 +204,6 @@ nnoremap <leader>h :set hlsearch! hlsearch?<CR>
 nnoremap <leader>s :set hlsearch<CR> #*
 inoremap <c-a> <esc>I
 inoremap <c-e> <esc>A
-" inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
 " commonly editted files
 nnoremap <leader>edd :e ~/.config/nvim/init.vim<CR>
 nnoremap <leader>edz :e ~/.zshrc<CR>
@@ -218,12 +221,12 @@ function! CdHist()
   return map(list, 'matchlist(v:val, "^cd \\(.*\\)")[1]')
 endfunction
 
+inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
+inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<tab>'
 augroup autocomplete
     autocmd!
     autocmd TextChangedI * call TypeComplete()
 augroup end
-inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
-inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<tab>'
 fun! TypeComplete()
   if getline('.')[col('.') - 2] =~ '\K' && getline('.')[col('.') - 1] !~ '\K'
     call feedkeys("\<c-n>")

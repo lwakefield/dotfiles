@@ -5,7 +5,7 @@ export ZSH=~/.oh-my-zsh
 ZSH_THEME="sorin"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-plugins=(git autojump)
+plugins=(git autojump kubectl laravel5)
 
 # User configuration
 export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -32,6 +32,9 @@ defaults write NSGlobalDomain KeyRepeat -int 0
 export GOPATH=~/go
 export PATH=$PATH:$GOPATH/bin
 
+export PATH="$(brew --prefix php56)/bin:$PATH"
+export PATH=$HOME/.composer/vendor/bin:$PATH
+
 alias lbg='source $BASE16_LIGHT_SHELL'
 alias dbg='source $BASE16_DARK_SHELL'
 alias s='source ~/.zshrc'
@@ -46,6 +49,13 @@ alias list='du -sh ./* | gsort -h'
 alias vu='vagrant up'
 alias vd='vagrant halt'
 alias json='python -m json.tool'
+alias kc='kubectl'
+alias kcd='kubectl describe'
+alias kcg='kubectl get'
+alias kcc='kubectl create'
+
+alias dm='docker-machine'
+alias dmc='docker-machine create --driver xhyve'
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -63,3 +73,13 @@ _ag() {
   fi
 }
 compdef _ag ag
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f /Users/lawrence/Downloads/google-cloud-sdk/path.zsh.inc ]; then
+  source '/Users/lawrence/Downloads/google-cloud-sdk/path.zsh.inc'
+fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f /Users/lawrence/Downloads/google-cloud-sdk/completion.zsh.inc ]; then
+  source '/Users/lawrence/Downloads/google-cloud-sdk/completion.zsh.inc'
+fi
