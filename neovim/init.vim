@@ -249,10 +249,11 @@ fun! ComplWord(findstart, base)
 endfun
 fun! GetWordsInBuffer(buffer)
     let contents = readfile(bufname(a:buffer))
-    let all_words = split(join(contents), '\W\+')
     let word_map = {}
-    for word in all_words
-        let word_map[word] = 1
+    for line in contents
+        for word in  split(line, '\W\+')
+            let word_map[word] = 1
+        endfor
     endfor
     return keys(word_map)
 endfun
