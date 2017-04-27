@@ -24,15 +24,13 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # Base16 Shell
-BASE16_SHELL="$HOME/.config/base16-shell/scripts/base16-harmonic16-dark.sh"
-[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
-
-defaults write NSGlobalDomain KeyRepeat -int 0
+# BASE16_SHELL="$HOME/.config/base16-shell/scripts/base16-tomorrow-night.sh"
+# [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
 export GOPATH=~/go
 export PATH=$PATH:$GOPATH/bin
 
-export PATH="$(brew --prefix php56)/bin:$PATH"
+# export PATH="$(brew --prefix php56)/bin:$PATH"
 export PATH=$HOME/.composer/vendor/bin:$PATH
 
 alias lbg='source $BASE16_LIGHT_SHELL'
@@ -49,6 +47,7 @@ alias list='du -sh ./* | gsort -h'
 alias vu='vagrant up'
 alias vd='vagrant halt'
 alias json='python -m json.tool'
+alias untar='tar -xvf'
 alias kc='kubectl'
 alias kcd='kubectl describe'
 alias kcg='kubectl get'
@@ -62,17 +61,23 @@ export FZF_DEFAULT_COMMAND='ag -g ""'
 
 # https://gist.github.com/hlissner/db74d23fc00bed81ff62
 search_replace() {
-    ag -l $1 | xargs sed -i -e "s/$1/$2/g"
+    ag -l $1 | xargs sed -i '' "s/$1/$2/g"
 }
 alias sr='search_replace'
 
+search_do() {
+    ag -l $1 | xargs sed -i '' "$2"
+}
+alias sd='search_do'
+
 # https://robots.thoughtbot.com/cding-to-frequently-used-directories-in-zsh
-_ag() {
+tagcomplete() {
   if (( CURRENT == 2 )); then
     compadd $(cut -f 1 .git/tags tmp/tags tags 2>/dev/null | grep -v '!_TAG')
   fi
 }
-compdef _ag ag
+# compdef tagcomplete ag
+# compdef tagcomplete sr
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f /Users/lawrence/Downloads/google-cloud-sdk/path.zsh.inc ]; then

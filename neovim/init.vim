@@ -2,29 +2,28 @@ call plug#begin('~/.vim/plugged')
     Plug 'Raimondi/delimitMate'
     Plug 'SirVer/ultisnips'
     Plug 'airblade/vim-gitgutter'
-    " Plug 'benekastah/neomake'
-    Plug 'w0rp/ale'
+    Plug 'alvan/vim-closetag'
     Plug 'arcticicestudio/nord-vim'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'honza/vim-snippets'
+    Plug 'jhawthorn/fzy'
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
-    Plug 'jhawthorn/fzy'
-    Plug 'srstevenson/vim-picker'
     Plug 'junegunn/vim-easy-align'
     Plug 'ludovicchabant/vim-gutentags'
     Plug 'michaeljsmith/vim-indent-object'
+    Plug 'sheerun/vim-polyglot'
+    Plug 'spf13/vim-autoclose'
+    Plug 'srstevenson/vim-picker'
     Plug 'tmhedberg/matchit' " % for html tags
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-rsi'
     Plug 'tpope/vim-sleuth' " autoset indentation options
     Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-rsi'
-    Plug 'spf13/vim-autoclose'
     Plug 'vim-scripts/YankRing.vim'
-    Plug 'alvan/vim-closetag'
-    Plug 'sheerun/vim-polyglot'
+    Plug 'w0rp/ale'
 call plug#end()
 
 set nocompatible
@@ -34,13 +33,12 @@ set incsearch
 set ignorecase
 set smartcase
 set wrap
-set rnu
-set nu
+set relativenumber
+set number
 set listchars=tab:>-,trail:~
 set list
 set hlsearch
 set spell
-" set colorcolumn=81,101
 filetype plugin indent on
 set noerrorbells
 set visualbell
@@ -60,19 +58,18 @@ set shiftround
 set foldmethod=indent
 set foldlevel=20
 set noswapfile
-set wildcharm=<c-z>
 set scrolloff=2
 set t_Co=256
 set autoread
 set undofile
 set undodir=~/.vim/undodir
-" set clipboard=unnamed
+
 let loaded_matchparen = 1
 
 " Let's get this party started
 let mapleader = " "
 colorscheme nord
-highlight OverLength ctermbg=0
+highlight OverLength ctermbg=red
 2match OverLength /\%81v\|\%101v/
 hi StatusLine ctermfg=1 ctermbg=None
 hi LineNr ctermfg=DarkGray ctermbg=None
@@ -84,7 +81,7 @@ let s:show_details = 0
 function! ToggleHiddenAll()
     if s:show_details  == 0
         let s:show_details = 1
-        set statusline=%=%F%m\ \ %p%%
+        set statusline=%=%F%m
     else
         let s:show_details = 0
         set statusline=%F%m%=[%L][%{&ff}]%y[%p%%][%04l,%04v]
@@ -119,16 +116,13 @@ let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:UltiSnipsUsePythonVersion = 2
 let g:UltiSnipsExpandTrigger = "<c-@>"
-let g:slime_no_mappings = 1
-let g:slime_target = 'tmux'
 let b:surround_99 = "/* \r */"
 
 " autocmds
 autocmd FileType vue UltiSnipsAddFiletypes javascript
 " autocmd! BufWritePost,BufEnter * Neomake
 autocmd! bufwritepost ~/.config/nvim/init.vim source ~/.config/nvim/init.vim
-highlight CursorOverWord ctermbg=8 ctermfg=White
-autocmd CursorMoved * exe printf('match CursorOverWord /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+autocmd FileType javascript.jsx,javascript nnoremap <buffer> <leader>f :!eslint --fix %<cr>
 
 " Opinionated overrides
 nnoremap Q <nop>
@@ -159,7 +153,6 @@ nnoremap :W :w
 " plugins...
 nmap <leader>c gcc
 vmap <leader>c gc
-nnoremap <leader>gi :Gbrowse<CR>
 " nnoremap <leader>p :FilesMru --tiebreak=end<cr>
 nnoremap <leader>p :PickerEdit<cr>
 nnoremap <leader><leader> :PickerBuffer<cr>
@@ -167,8 +160,6 @@ nnoremap <leader><cr> :b#<cr>
 nnoremap <leader>t :PickerBufferTag<cr>
 nnoremap <leader>/ :Ag<Space>
 nnoremap <leader>// :Ag<Space><C-r><C-w><CR>
-" send the last command
-nmap <leader>m :SlimeSend1 <c-v><c-p><c-v><cr><cr>
 xmap <leader>l <Plug>(EasyAlign)
 " buffer nav
 " nnoremap <leader>w :bd<CR>
@@ -198,34 +189,71 @@ nnoremap <leader>edd :e ~/.config/nvim/init.vim<CR>
 nnoremap <leader>edt :e ~/.tmux.conf<CR>
 nnoremap <leader>edz :e ~/.zshrc<CR>
 nnoremap <leader>edp :e ~/.config/nvim/plugins.vim<CR>
-nnoremap <leader>et :e ~/notes/todo.md<CR>
-nnoremap <leader>en :e ~/notes/notes.md<CR>
+nnoremap <leader>etn :e ~/todos/.md<left><left><left>
+nnoremap <leader>ett :FZF ~/todos<CR>
+" Go somewhere...
 nnoremap <leader>go :!open "https://www.google.com/search?ie=UTF-8&oe=UTF-8&sourceid=navclient&gfns=1&q="<Left>
-"
+nnoremap <leader>gi :Gbrowse<CR>
+
+cnoremap y<space>/ :normal qaq<cr> :g//y A<left><left><left><left>
+cnoreabbrev bda bufdo bd
+
 iabbrev lgo log
 iabbrev #! #!/usr/bin/env
 
-function! CdHist()
-  let max  = histnr(':')
-  let fmt  = ' %'.len(string(max)).'d '
-  let list = filter(map(range(1, max), 'histget(":", - v:val)'), '!empty(v:val) && v:val =~ "^cd .*"')
-  return map(list, 'matchlist(v:val, "^cd \\(.*\\)")[1]')
-endfunction
-
-inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
-inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<tab>'
+" Autocomplete!
 augroup autocomplete
     autocmd!
     autocmd TextChangedI * call TypeComplete()
 augroup end
+inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
+inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<tab>'
 inoremap <expr> <cr> pumvisible() ? '<c-y><cr>' : '<cr>'
 inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
 inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<tab>'
 inoremap <c-l> <c-e><c-x><c-l>
 inoremap <c-o> <c-e><c-x><c-o>
 fun! TypeComplete()
-  " if getline('.')[col('.') - 2] =~ '\K' && getline('.')[col('.') - 1] !~ '\K'
   if !pumvisible() && getline('.')[col('.') - 2] =~ '\S'
-    call feedkeys("\<c-n>")
+    " call feedkeys("\<c-n>")
+    call feedkeys("\<c-x>\<c-u>")
   end
 endfun
+
+" This highlights the current word
+augroup hlword
+    autocmd!
+    autocmd CursorMoved * call HlWord()
+augroup end
+fun! HlWord()
+  if getline('.')[col('.') - 1] =~ '\w'
+    exe printf('match CursorOverWord /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+  else
+    exe 'match none'
+  end
+endfun
+highlight CursorOverWord ctermbg=8 ctermfg=White
+
+fun! ComplWord(findstart, base)
+    if a:findstart
+        " locate the start of the word
+        let line = getline('.')
+        let start = col('.') - 1
+        while start > 0 && line[start - 1] =~ '\w'
+            let start -= 1
+        endwhile
+        return start
+    end
+    let words = join(GetWordsInBuffer(bufnr('%')), '\\n')
+    return split(system('echo '.words.' | fzy -e '.a:base))
+endfun
+fun! GetWordsInBuffer(buffer)
+    let contents = readfile(bufname(a:buffer))
+    let all_words = split(join(contents), '\W\+')
+    let word_map = {}
+    for word in all_words
+        let word_map[word] = 1
+    endfor
+    return keys(word_map)
+endfun
+set completefunc=ComplWord
