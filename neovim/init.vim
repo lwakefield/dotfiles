@@ -215,7 +215,6 @@ inoremap <c-l> <c-e><c-x><c-l>
 inoremap <c-o> <c-e><c-x><c-o>
 fun! TypeComplete()
   if !pumvisible() && getline('.')[col('.') - 2] =~ '\S'
-    " call feedkeys("\<c-n>")
     call feedkeys("\<c-x>\<c-u>")
   end
 endfun
@@ -234,6 +233,7 @@ fun! HlWord()
 endfun
 highlight CursorOverWord ctermbg=8 ctermfg=White
 
+" Auto complete!
 fun! ComplWord(findstart, base)
     if a:findstart
         " locate the start of the word
@@ -244,17 +244,38 @@ fun! ComplWord(findstart, base)
         endwhile
         return start
     end
-    let words = join(GetWordsInBuffer(bufnr('%')), '\\n')
+    if a:base == ''
+        return []
+    end
+    let bn = bufnr('%')
+    if has_key(g:wordcache, bn) == 0
+        return []
+    end
+    let words = join(g:wordcache[bufnr('%')], '\\n')
     return split(system('echo '.words.' | fzy -e '.a:base))
 endfun
-fun! GetWordsInBuffer(buffer)
-    let contents = readfile(bufname(a:buffer))
+set completefunc=ComplWord
+
+let wordcache = {}
+augroup wordcache
+    autocmd!
+    autocmd BufEnter * call CacheWords()
+    autocmd TextChanged * call CacheWords()
+    autocmd InsertLeave * call CacheWords()
+    autocmd InsertLeave * call CacheWords()
+augroup end
+
+fun! CacheWords()
+    let lines = getline(1, '$')
+    let g:wordcache[bufnr('%')] = GetWords(lines)
+endfun
+
+fun! GetWords(lines)
     let word_map = {}
-    for line in contents
+    for line in a:lines
         for word in  split(line, '\W\+')
             let word_map[word] = 1
         endfor
     endfor
     return keys(word_map)
 endfun
-set completefunc=ComplWord
