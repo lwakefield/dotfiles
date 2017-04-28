@@ -213,10 +213,14 @@ inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
 inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<tab>'
 inoremap <c-l> <c-e><c-x><c-l>
 inoremap <c-o> <c-e><c-x><c-o>
+
+let lastpos = getpos('.')
 fun! TypeComplete()
-  if !pumvisible() && getline('.')[col('.') - 2] =~ '\S'
-    call feedkeys("\<c-x>\<c-u>")
-  end
+    let currpos = getpos('.')
+    if !pumvisible() && getline('.')[col('.') - 2] =~ '\S' && currpos != g:lastpos
+         call feedkeys("\<c-x>\<c-u>")
+    end
+    let g:lastpos = currpos
 endfun
 
 " This highlights the current word
@@ -244,11 +248,8 @@ fun! ComplWord(findstart, base)
         endwhile
         return start
     end
-    if a:base == ''
-        return []
-    end
     let bn = bufnr('%')
-    if has_key(g:wordcache, bn) == 0
+    if a:base == '' || has_key(g:wordcache, bn) == 0
         return []
     end
     let words = join(g:wordcache[bufnr('%')], '\\n')
@@ -261,7 +262,6 @@ augroup wordcache
     autocmd!
     autocmd BufEnter * call CacheWords()
     autocmd TextChanged * call CacheWords()
-    autocmd InsertLeave * call CacheWords()
     autocmd InsertLeave * call CacheWords()
 augroup end
 
