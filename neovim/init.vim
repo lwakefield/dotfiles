@@ -37,7 +37,7 @@ set relativenumber
 set number
 set listchars=tab:>-,trail:~
 set list
-set hlsearch
+set nohlsearch
 set spell
 filetype plugin indent on
 set noerrorbells
@@ -173,8 +173,6 @@ nnoremap <leader>rw :%s/<c-r><c-w>//g<left><left>
 nnoremap <leader>rg :%s//g<left><left>
 nnoremap <leader>rl :s//g<left><left>
 vnoremap <leader>rw :s///g<left><left><left>
-nnoremap <leader>n :set hlsearch<cr>#*cgn
-vnoremap <leader>n <esc>:set hlsearch<cr>gvy/<C-R>"<CR>Ncgn
 nnoremap <leader>v :normal! v/[\(\){}\[\]]<CR>%
 nnoremap <leader>V :normal! V$?[\(\){}\[\]]<CR>%
 vnoremap <leader>v :normal! v/[\(\){}\[\]]<CR>%
