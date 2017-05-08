@@ -89,6 +89,7 @@ function! ToggleHiddenAll()
 endfunction
 call ToggleHiddenAll()
 nnoremap <leader>d :call ToggleHiddenAll()<CR>
+set guicursor=n-v-c-sm:block/lCursor-blinkon1,i-ci-ve:ver25/lCursor-blinkon1,r-cr-o:hor20
 
 " Plugin defaults
 if executable('ag')
@@ -115,14 +116,13 @@ let g:neomake_vue_enabled_makers = ['eslint']
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:UltiSnipsUsePythonVersion = 2
-let g:UltiSnipsExpandTrigger = "<c-@>"
+let g:UltiSnipsExpandTrigger="<c-]>"
 let b:surround_99 = "/* \r */"
 
 " autocmds
 autocmd FileType vue UltiSnipsAddFiletypes javascript
 " autocmd! BufWritePost,BufEnter * Neomake
 autocmd! bufwritepost ~/.config/nvim/init.vim source ~/.config/nvim/init.vim
-autocmd FileType javascript.jsx,javascript nnoremap <buffer> <leader>f :!eslint --fix %<cr>
 
 " Opinionated overrides
 nnoremap Q <nop>
@@ -147,9 +147,6 @@ nnoremap <c-c> <esc>
 inoremap :w <Esc>:w<CR>
 vnoremap :w <Esc>:w<CR>
 nnoremap :W :w
-" cnoremap wq w
-" cnoremap qw w
-" nnoremap q: :q
 " plugins...
 nmap <leader>c gcc
 vmap <leader>c gc
@@ -161,12 +158,13 @@ nnoremap <leader>t :PickerBufferTag<cr>
 nnoremap <leader>/ :Ag<Space>
 nnoremap <leader>// :Ag<Space><C-r><C-w><CR>
 xmap <leader>l <Plug>(EasyAlign)
-" buffer nav
-" nnoremap <leader>w :bd<CR>
-" nnoremap <leader>W :bd <c-a><CR>
-nnoremap <leader>w :w<CR>
-nnoremap <leader>[ :bprev<CR>
-nnoremap <leader>] :bnext<CR>
+" window mappings
+nnoremap <leader>ww <c-w>w
+nnoremap <leader>wq <c-w>q
+nnoremap <leader>wv :vsplit<cr>
+nnoremap <leader>wh :hsplit<cr>
+nnoremap <leader>wm <c-w><bar><cr><c-w>_<cr>
+nnoremap <leader>we <c-w>=
 " utility belt
 nnoremap <leader>rwl :s/<c-r><c-w>//g<left><left>
 nnoremap <leader>rw :%s/<c-r><c-w>//g<left><left>
@@ -196,8 +194,28 @@ nnoremap <leader>gi :Gbrowse<CR>
 cnoremap y<space>/ :normal qaq<cr> :g//y A<left><left><left><left>
 cnoreabbrev bda bufdo bd
 
-iabbrev lgo log
 iabbrev #! #!/usr/bin/env
+
+augroup javascript
+  autocmd!
+  autocmd FileType javascript.jsx,javascript nnoremap <buffer> <leader>f
+        \ :!prettier --write --single-quote --trailing-comma=all --no-semi %<cr>
+  " autocmd FileType javascript.jsx,javascript iabbrev cl console.log()<left><c-r>=EatSpace()<cr>
+augroup end
+
+" This highlights the current word
+augroup hlword
+    autocmd!
+    autocmd CursorMoved * call HlWord()
+augroup end
+fun! HlWord()
+  if getline('.')[col('.') - 1] =~ '\w'
+    exe printf('match CursorOverWord /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+  else
+    exe 'match none'
+  end
+endfun
+highlight CursorOverWord ctermbg=8 ctermfg=White
 
 " Autocomplete!
 augroup autocomplete
@@ -221,21 +239,6 @@ fun! TypeComplete()
     let g:lastpos = currpos
 endfun
 
-" This highlights the current word
-augroup hlword
-    autocmd!
-    autocmd CursorMoved * call HlWord()
-augroup end
-fun! HlWord()
-  if getline('.')[col('.') - 1] =~ '\w'
-    exe printf('match CursorOverWord /\V\<%s\>/', escape(expand('<cword>'), '/\'))
-  else
-    exe 'match none'
-  end
-endfun
-highlight CursorOverWord ctermbg=8 ctermfg=White
-
-" Auto complete!
 fun! ComplWord(findstart, base)
     if a:findstart
         " locate the start of the word
@@ -247,11 +250,15 @@ fun! ComplWord(findstart, base)
         return start
     end
     let bn = bufnr('%')
-    if a:base == '' || has_key(g:wordcache, bn) == 0
+    if a:base == ''
         return []
     end
-    let words = join(g:wordcache[bufnr('%')], '\\n')
-    return split(system('echo '.words.' | fzy -e '.a:base))
+
+    let snippets = GetSnippets(a:base)
+    let words = join(map(values(g:wordcache), {k, v -> join(v, '\\n')}), '\\n')
+    let fuzzedwords = split(system('echo "'.words.'" | fzy -e '.a:base))
+
+    return snippets + fuzzedwords
 endfun
 set completefunc=ComplWord
 
@@ -261,11 +268,25 @@ augroup wordcache
     autocmd BufEnter * call CacheWords()
     autocmd TextChanged * call CacheWords()
     autocmd InsertLeave * call CacheWords()
+    autocmd CompleteDone * call MaybeExpandSnippet()
 augroup end
 
+fun! MaybeExpandSnippet()
+    let completed = v:completed_item
+    if completed != {} && completed.kind == '<snippet>'
+        call feedkeys("\<BS>")
+        call UltiSnips#ExpandSnippet()
+    endif
+endfun
+fun! GetSnippets(match)
+    let snippets = UltiSnips#SnippetsInCurrentScope()
+    let filtered = filter(snippets, {k, v -> k == a:match})
+    return values(map(filtered, {k, v -> {'word': k, 'menu': v, 'kind': '<snippet>'}}))
+endfun
+
 fun! CacheWords()
-    let lines = getline(1, '$')
-    let g:wordcache[bufnr('%')] = GetWords(lines)
+    let bufnr = bufnr('%')
+    let g:wordcache[bufnr] = GetWords(getbufline(bufnr, 1, '$'))
 endfun
 
 fun! GetWords(lines)
@@ -273,6 +294,19 @@ fun! GetWords(lines)
     for line in a:lines
         for word in  split(line, '\W\+')
             let word_map[word] = 1
+        endfor
+    endfor
+    return keys(word_map)
+endfun
+
+fun! GetAllWords()
+    let bufnrs = filter(range(1, bufnr('$')), 'buflisted(v:val) && bufloaded(v:val)')
+    let word_map = {}
+    for buf_nr in bufnrs
+        for line in getbufline(buf_nr, 1, '$')
+            for word in  split(line, '\W\+')
+                let word_map[word] = 1
+            endfor
         endfor
     endfor
     return keys(word_map)
