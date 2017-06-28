@@ -1,11 +1,11 @@
 call plug#begin('~/.vim/plugged')
     Plug 'Raimondi/delimitMate'
-    Plug 'SirVer/ultisnips'
+    " Plug 'SirVer/ultisnips'
     Plug 'airblade/vim-gitgutter'
     Plug 'alvan/vim-closetag'
     Plug 'arcticicestudio/nord-vim'
     Plug 'christoomey/vim-tmux-navigator'
-    Plug 'honza/vim-snippets'
+    " Plug 'honza/vim-snippets'
     Plug 'jhawthorn/fzy'
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
@@ -18,12 +18,19 @@ call plug#begin('~/.vim/plugged')
     Plug 'tmhedberg/matchit' " % for html tags
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-rhubarb'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-rsi'
     Plug 'tpope/vim-sleuth' " autoset indentation options
     Plug 'tpope/vim-surround'
     Plug 'vim-scripts/YankRing.vim'
     Plug 'w0rp/ale'
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'Shougo/neosnippet'
+    Plug 'Shougo/neosnippet-snippets'
+    Plug 'carlitux/deoplete-ternjs'
+    Plug 'zchee/deoplete-jedi'
+    " Plug '~/.vim/plugged/lautocomplete'
 call plug#end()
 
 set nocompatible
@@ -46,7 +53,7 @@ set visualbell
 set hidden
 set mouse=a
 set backspace=indent,eol,start
-set completeopt=longest,menu,menuone,noinsert,noselect
+set completeopt=longest,menu,menuone,noinsert
 set complete=.,w,b,u,t
 set shortmess+=c
 set expandtab
@@ -95,9 +102,10 @@ set guicursor=n-v-c-sm:block/lCursor-blinkon1,i-ci-ve:ver25/lCursor-blinkon1,r-c
 if executable('ag')
     let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
 endif
+let g:deoplete#enable_at_startup = 1
 let g:closetag_filenames = '*.html,*.jsx,*.cjsx'
 let g:gitgutter_map_keys = 0
-let g:gutentags_ctags_exclude = ['node_modules', 'dist_client', 'dist_server']
+let g:gutentags_ctags_exclude = ['node_modules', 'dist_client', 'dist_server', 'coverage']
 let g:mucomplete#chains = {}
 let g:mucomplete#chains.default = ['file', 'omni', 'keyn', 'c-n', 'dict']
 let g:neomake_scss_enabled_makers = ['stylelint']
@@ -118,6 +126,9 @@ let g:netrw_liststyle = 3
 let g:UltiSnipsUsePythonVersion = 2
 let g:UltiSnipsExpandTrigger="<c-]>"
 let b:surround_99 = "/* \r */"
+let g:ale_fixers = {
+  \'javascript': ['eslint']
+  \ }
 
 " autocmds
 autocmd FileType vue UltiSnipsAddFiletypes javascript
@@ -158,6 +169,7 @@ nnoremap <leader>t :PickerBufferTag<cr>
 nnoremap <leader>/ :Ag<Space>
 nnoremap <leader>// :Ag<Space><C-r><C-w><CR>
 xmap <leader>l <Plug>(EasyAlign)
+nnoremap <leader>f :ALEFix<cr>
 " window mappings
 nnoremap <leader>ww <c-w>w
 nnoremap <leader>wq <c-w>q
@@ -196,13 +208,6 @@ cnoreabbrev bda bufdo bd
 
 iabbrev #! #!/usr/bin/env
 
-augroup javascript
-  autocmd!
-  autocmd FileType javascript.jsx,javascript nnoremap <buffer> <leader>f
-        \ :!prettier --write --single-quote --trailing-comma=all --no-semi %<cr>
-  " autocmd FileType javascript.jsx,javascript iabbrev cl console.log()<left><c-r>=EatSpace()<cr>
-augroup end
-
 " This highlights the current word
 augroup hlword
     autocmd!
@@ -217,97 +222,8 @@ fun! HlWord()
 endfun
 highlight CursorOverWord ctermbg=8 ctermfg=White
 
-" Autocomplete!
-augroup autocomplete
-    autocmd!
-    autocmd TextChangedI * call TypeComplete()
-augroup end
-inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
-inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<tab>'
-inoremap <expr> <cr> pumvisible() ? '<c-y><cr>' : '<cr>'
-inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
-inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<tab>'
+inoremap <expr> <cr> pumvisible() ? '<c-e><cr>' : '<cr>'
+inoremap <expr> <tab> pumvisible() ? '<c-y>' : '<tab>'
 inoremap <c-l> <c-e><c-x><c-l>
 inoremap <c-o> <c-e><c-x><c-o>
-
-let lastpos = getpos('.')
-fun! TypeComplete()
-    let currpos = getpos('.')
-    if !pumvisible() && getline('.')[col('.') - 2] =~ '\S' && currpos != g:lastpos
-         call feedkeys("\<c-x>\<c-u>")
-    end
-    let g:lastpos = currpos
-endfun
-
-fun! ComplWord(findstart, base)
-    if a:findstart
-        " locate the start of the word
-        let line = getline('.')
-        let start = col('.') - 1
-        while start > 0 && line[start - 1] =~ '\w'
-            let start -= 1
-        endwhile
-        return start
-    end
-    let bn = bufnr('%')
-    if a:base == ''
-        return []
-    end
-
-    let snippets = GetSnippets(a:base)
-    let words = join(map(values(g:wordcache), {k, v -> join(v, '\\n')}), '\\n')
-    let fuzzedwords = split(system('echo "'.words.'" | fzy -e '.a:base))
-
-    return snippets + fuzzedwords
-endfun
-set completefunc=ComplWord
-
-let wordcache = {}
-augroup wordcache
-    autocmd!
-    autocmd BufEnter * call CacheWords()
-    autocmd TextChanged * call CacheWords()
-    autocmd InsertLeave * call CacheWords()
-    autocmd CompleteDone * call MaybeExpandSnippet()
-augroup end
-
-fun! MaybeExpandSnippet()
-    let completed = v:completed_item
-    if completed != {} && completed.kind == '<snippet>'
-        call feedkeys("\<BS>")
-        call UltiSnips#ExpandSnippet()
-    endif
-endfun
-fun! GetSnippets(match)
-    let snippets = UltiSnips#SnippetsInCurrentScope()
-    let filtered = filter(snippets, {k, v -> k == a:match})
-    return values(map(filtered, {k, v -> {'word': k, 'menu': v, 'kind': '<snippet>'}}))
-endfun
-
-fun! CacheWords()
-    let bufnr = bufnr('%')
-    let g:wordcache[bufnr] = GetWords(getbufline(bufnr, 1, '$'))
-endfun
-
-fun! GetWords(lines)
-    let word_map = {}
-    for line in a:lines
-        for word in  split(line, '\W\+')
-            let word_map[word] = 1
-        endfor
-    endfor
-    return keys(word_map)
-endfun
-
-fun! GetAllWords()
-    let bufnrs = filter(range(1, bufnr('$')), 'buflisted(v:val) && bufloaded(v:val)')
-    let word_map = {}
-    for buf_nr in bufnrs
-        for line in getbufline(buf_nr, 1, '$')
-            for word in  split(line, '\W\+')
-                let word_map[word] = 1
-            endfor
-        endfor
-    endfor
-    return keys(word_map)
-endfun
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
