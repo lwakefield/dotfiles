@@ -1,11 +1,9 @@
 call plug#begin('~/.vim/plugged')
     Plug 'Raimondi/delimitMate'
-    " Plug 'SirVer/ultisnips'
     Plug 'airblade/vim-gitgutter'
     Plug 'alvan/vim-closetag'
     Plug 'arcticicestudio/nord-vim'
     Plug 'christoomey/vim-tmux-navigator'
-    " Plug 'honza/vim-snippets'
     Plug 'jhawthorn/fzy'
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
@@ -30,7 +28,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'Shougo/neosnippet-snippets'
     Plug 'carlitux/deoplete-ternjs'
     Plug 'zchee/deoplete-jedi'
-    " Plug '~/.vim/plugged/lautocomplete'
 call plug#end()
 
 set nocompatible
@@ -53,7 +50,7 @@ set visualbell
 set hidden
 set mouse=a
 set backspace=indent,eol,start
-set completeopt=longest,menu,menuone,noinsert
+set completeopt=longest,menu,menuone,noinsert,noselect
 set complete=.,w,b,u,t
 set shortmess+=c
 set expandtab
@@ -123,8 +120,6 @@ let g:neomake_vue_eslint_maker = {
 let g:neomake_vue_enabled_makers = ['eslint']
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
-let g:UltiSnipsUsePythonVersion = 2
-let g:UltiSnipsExpandTrigger="<c-]>"
 let b:surround_99 = "/* \r */"
 let g:ale_fixers = {
   \'javascript': ['eslint']
@@ -132,7 +127,6 @@ let g:ale_fixers = {
 
 " autocmds
 autocmd FileType vue UltiSnipsAddFiletypes javascript
-" autocmd! BufWritePost,BufEnter * Neomake
 autocmd! bufwritepost ~/.config/nvim/init.vim source ~/.config/nvim/init.vim
 
 " Opinionated overrides
@@ -223,7 +217,8 @@ endfun
 highlight CursorOverWord ctermbg=8 ctermfg=White
 
 inoremap <expr> <cr> pumvisible() ? '<c-e><cr>' : '<cr>'
-inoremap <expr> <tab> pumvisible() ? '<c-y>' : '<tab>'
+inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'
+inoremap <expr> <s-tab> pumvisible() ? '<c-p>' : '<tab>'
 inoremap <c-l> <c-e><c-x><c-l>
 inoremap <c-o> <c-e><c-x><c-o>
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)

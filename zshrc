@@ -5,7 +5,7 @@ export ZSH=~/.oh-my-zsh
 ZSH_THEME="sorin"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-plugins=(git autojump kubectl laravel5)
+plugins=(git autojump)
 
 # User configuration
 export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -52,9 +52,17 @@ alias kc='kubectl'
 alias kcd='kubectl describe'
 alias kcg='kubectl get'
 alias kcc='kubectl create'
+alias vimn='vim -u NONE'
 
-alias dm='docker-machine'
-alias dmc='docker-machine create --driver xhyve'
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'
+
+dsh() { docker exec -it $(docker ps -aqf "name=$1") sh; }
+dri()   { docker rmi $(docker images -q); }
+drm()   { docker rm $(docker ps -a -q); }
+dstop() { docker stop $(docker ps -a -q); }
+
+env2var() { export $(cat $1 | xargs) }
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -65,26 +73,9 @@ search_replace() {
 }
 alias sr='search_replace'
 
-search_do() {
-    ag -l $1 | xargs sed -i '' "$2"
-}
-alias sd='search_do'
-
-# https://robots.thoughtbot.com/cding-to-frequently-used-directories-in-zsh
-tagcomplete() {
-  if (( CURRENT == 2 )); then
-    compadd $(cut -f 1 .git/tags tmp/tags tags 2>/dev/null | grep -v '!_TAG')
-  fi
-}
-# compdef tagcomplete ag
-# compdef tagcomplete sr
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f /Users/lawrence/Downloads/google-cloud-sdk/path.zsh.inc ]; then
-  source '/Users/lawrence/Downloads/google-cloud-sdk/path.zsh.inc'
-fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f /Users/lawrence/Downloads/google-cloud-sdk/completion.zsh.inc ]; then
-  source '/Users/lawrence/Downloads/google-cloud-sdk/completion.zsh.inc'
-fi
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
