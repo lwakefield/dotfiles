@@ -1,8 +1,10 @@
 call plug#begin('~/.vim/plugged')
-    Plug 'Raimondi/delimitMate'
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'Shougo/neosnippet'
+    Plug 'Shougo/neosnippet-snippets'
     Plug 'airblade/vim-gitgutter'
-    Plug 'alvan/vim-closetag'
-    Plug 'arcticicestudio/nord-vim'
+    Plug 'airblade/vim-rooter'
+    Plug 'carlitux/deoplete-ternjs'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'jhawthorn/fzy'
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -16,32 +18,27 @@ call plug#begin('~/.vim/plugged')
     Plug 'tmhedberg/matchit' " % for html tags
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-fugitive'
-    Plug 'tpope/vim-rhubarb'
     Plug 'tpope/vim-repeat'
-    Plug 'tpope/vim-rsi'
-    Plug 'tpope/vim-sleuth' " autoset indentation options
+    Plug 'tpope/vim-rhubarb'
+    Plug 'tpope/vim-rsi' " ADd support for readline shortcuts in cmdline
+    Plug 'tpope/vim-sleuth' " SLOW autoset indentation options
     Plug 'tpope/vim-surround'
     Plug 'vim-scripts/YankRing.vim'
     Plug 'w0rp/ale'
-    Plug 'Shougo/deoplete.nvim'
-    Plug 'Shougo/neosnippet'
-    Plug 'Shougo/neosnippet-snippets'
-    Plug 'carlitux/deoplete-ternjs'
     Plug 'zchee/deoplete-jedi'
 call plug#end()
 
 set nocompatible
-filetype off
-set inccommand=split
+set inccommand=nosplit
 set incsearch
+set nohlsearch
 set ignorecase
 set smartcase
-set wrap
+set nowrap
 set relativenumber
 set number
 set listchars=tab:>-,trail:~
 set list
-set nohlsearch
 set spell
 filetype plugin indent on
 set noerrorbells
@@ -72,12 +69,78 @@ let loaded_matchparen = 1
 
 " Let's get this party started
 let mapleader = " "
-colorscheme nord
-highlight OverLength ctermbg=red
+
+let tcolors = {
+\    'black':         0,
+\    'red':           1,
+\    'green':         2,
+\    'yellow':        3,
+\    'blue':          4,
+\    'magenta':       5,
+\    'cyan':          6,
+\    'grey':          7,
+\    'brightblack':   8,
+\    'brightred':     9,
+\    'brightgreen':   10,
+\    'brightyellow':  11,
+\    'brightblue':    12,
+\    'brightmagenta': 13,
+\    'brightcyan':    14,
+\    'brightgrey':    15
+\}
+
+function! s:hi(group, cterm, ctermfg, ctermbg)
+    exe 'highlight ' . a:group
+    \ . ' cterm='.a:cterm
+    \ . ' ctermfg='.a:ctermfg
+    \ . ' ctermbg='.a:ctermbg
+endfunction
+
+" Custom
+call s:hi('OverLength',     'None',      tcolors.black,       tcolors.red)
 2match OverLength /\%81v\|\%101v/
-hi StatusLine ctermfg=1 ctermbg=None
-hi LineNr ctermfg=DarkGray ctermbg=None
-hi SignColumn ctermfg=1 ctermbg=None
+call s:hi('CursorOverWord', 'underline', tcolors.red,         'None')
+
+" Syntax
+call s:hi('Comment',        'None',      tcolors.brightblack, 'None')
+
+call s:hi('String',         'None',      tcolors.green,       'None')
+call s:hi('Constant',       'None',      tcolors.green,       'None')
+call s:hi('Number',         'None',      tcolors.green,       'None')
+call s:hi('Boolean',        'None',      tcolors.green,       'None')
+call s:hi('Float',          'None',      tcolors.green,       'None')
+
+call s:hi('Identifier', 'None',      tcolors.cyan,   'None')
+call s:hi('Statement',  'None',      tcolors.blue,   'None')
+call s:hi('PreProc',    'None',      tcolors.blue,   'None')
+call s:hi('Type',       'None',      tcolors.blue,   'None')
+call s:hi('Special',    'None',      'None',         'None')
+call s:hi('Ignore',     'None',      tcolors.black,  'None')
+call s:hi('Underlined', 'underline', 'None',         'None')
+call s:hi('Error',      'underline', tcolors.red,    'None')
+call s:hi('Todo',       'None',      tcolors.yellow, 'None')
+
+" General Groups
+call s:hi('StatusLine',     'None',      tcolors.red,         'None')
+call s:hi('StatusLineNC',   'None',      tcolors.brightblack, 'None')
+call s:hi('CursorLineNr',   'None',      tcolors.brightgrey,  'None')
+call s:hi('LineNr',         'None',      tcolors.brightblack, 'None')
+call s:hi('SignColumn',     'None',      'None',              'None')
+call s:hi('VertSplit',      'None',      'None',              'None')
+call s:hi('Visual',         'None',      tcolors.black,       tcolors.yellow)
+call s:hi('SpellBad',       'underline', 'None',              'None')
+call s:hi('SpellCap',       'None', 'None',              'None')
+call s:hi('PMenu',          'None',      tcolors.black,       tcolors.brightblack)
+call s:hi('Folded',         'None',      tcolors.brightblack,       'None')
+" ColorColumn Conceal Cursor CursorColumn CursorIM CursorLine CursorLineNr
+" DiffAdd DiffChange DiffDelete DiffText Directory EndOfBuffer ErrorMsg
+" FoldColumn Folded Groups IncSearch LineNr MatchParen ModeMsg MoreMsg NonText
+" Normal Pmenu PmenuSbar PmenuSel PmenuThumb Question QuickFixLine Search
+" SignColumn SpecialKey SpellBad SpellCap SpellLocal SpellRare StatusLine
+" StatusLineNC Substitute TabLine TabLineFill TabLineSel TermCursor
+" TermCursorNC Title VertSplit Visual WarningMsg Whitespace WildMenu
+
+set fillchars=""
 set laststatus=2
 " This toggles the status line detail level it is up here, because it does some
 " initialization
@@ -99,12 +162,11 @@ set guicursor=n-v-c-sm:block/lCursor-blinkon1,i-ci-ve:ver25/lCursor-blinkon1,r-c
 if executable('ag')
     let $FZF_DEFAULT_COMMAND = 'ag -l -g ""'
 endif
+
 let g:deoplete#enable_at_startup = 1
-let g:closetag_filenames = '*.html,*.jsx,*.cjsx'
+" let g:deoplete#enable_on_insert_enter = 0
 let g:gitgutter_map_keys = 0
-let g:gutentags_ctags_exclude = ['node_modules', 'dist_client', 'dist_server', 'coverage']
-let g:mucomplete#chains = {}
-let g:mucomplete#chains.default = ['file', 'omni', 'keyn', 'c-n', 'dict']
+let g:gutentags_ctags_exclude = ['node_modules', 'dist_client', 'dist_server', 'coverage', 'build']
 let g:neomake_scss_enabled_makers = ['stylelint']
 let g:neomake_scss_stylelint_maker = {
             \ 'exe': 'stylelint',
@@ -122,8 +184,10 @@ let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let b:surround_99 = "/* \r */"
 let g:ale_fixers = {
-  \'javascript': ['eslint']
+  \'javascript': ['eslint'],
+  \'python': ['yapf']
   \ }
+let g:yankring_clipboard_monitor=0
 
 " autocmds
 autocmd FileType vue UltiSnipsAddFiletypes javascript
@@ -137,17 +201,17 @@ nnoremap j gj
 nnoremap k gk
 vnoremap H ^
 vnoremap L $l
-nnoremap <tab> >>
-nnoremap <s-tab> <<
-vnoremap <tab> >gv
-vnoremap <s-tab> <gv
+nnoremap > >>
+nnoremap < <<
+vnoremap > >gv
+vnoremap < <gv
 " the l stops cursor creep
 inoremap <esc> <esc>l
 vnoremap <esc> <esc>
 nnoremap <esc> <esc>
-inoremap <c-c> <esc>l
-vnoremap <c-c> <esc>
-nnoremap <c-c> <esc>
+" inoremap <c-c> <esc>l
+" vnoremap <c-c> <esc>
+" nnoremap <c-c> <esc>
 " Because I can't type for shit...
 inoremap :w <Esc>:w<CR>
 vnoremap :w <Esc>:w<CR>
@@ -163,7 +227,9 @@ nnoremap <leader>t :PickerBufferTag<cr>
 nnoremap <leader>/ :Ag<Space>
 nnoremap <leader>// :Ag<Space><C-r><C-w><CR>
 xmap <leader>l <Plug>(EasyAlign)
-nnoremap <leader>f :ALEFix<cr>
+nnoremap <leader>ff :ALEFix<cr>
+nnoremap <leader>ft :s/\s*$//g
+vnoremap <leader>ft :s/\s*$//g
 " window mappings
 nnoremap <leader>ww <c-w>w
 nnoremap <leader>wq <c-w>q
@@ -173,6 +239,7 @@ nnoremap <leader>wm <c-w><bar><cr><c-w>_<cr>
 nnoremap <leader>we <c-w>=
 " utility belt
 nnoremap <leader>rwl :s/<c-r><c-w>//g<left><left>
+nnoremap <leader>rr :%s/g<left>
 nnoremap <leader>rw :%s/<c-r><c-w>//g<left><left>
 nnoremap <leader>rg :%s//g<left><left>
 nnoremap <leader>rl :s//g<left><left>
@@ -190,17 +257,43 @@ nnoremap <leader>s :set hlsearch<CR> #*
 nnoremap <leader>edd :e ~/.config/nvim/init.vim<CR>
 nnoremap <leader>edt :e ~/.tmux.conf<CR>
 nnoremap <leader>edz :e ~/.zshrc<CR>
+nnoremap <leader>edf :e ~/.config/fish/config.fish<CR>
 nnoremap <leader>edp :e ~/.config/nvim/plugins.vim<CR>
 nnoremap <leader>etn :e ~/todos/.md<left><left><left>
-nnoremap <leader>ett :FZF ~/todos<CR>
+nnoremap <leader>ett :e ~/notes/todos.md<cr>
+nnoremap <leader>etd :exe 'e ~/notes/' . strftime('%y-%m-%d') . '.md'<cr>
 " Go somewhere...
 nnoremap <leader>go :!open "https://www.google.com/search?ie=UTF-8&oe=UTF-8&sourceid=navclient&gfns=1&q="<Left>
 nnoremap <leader>gi :Gbrowse<CR>
 
+tnoremap <buffer> <Esc> <C-\><C-n>
+tnoremap <buffer> <C-h> <C-\><C-n><C-w>h
+tnoremap <buffer> <C-j> <C-\><C-n><C-w>j
+tnoremap <buffer> <C-k> <C-\><C-n><C-w>k
+tnoremap <buffer> <C-l> <C-\><C-n><C-w>l
+
+augroup markdown
+    autocmd!
+    autocmd FileType markdown nnoremap <buffer> <leader>fu yypVr=
+    autocmd FileType markdown nnoremap <buffer> <leader>fh :s/^/#/<cr>
+    autocmd FileType markdown nnoremap <buffer> <leader>fw vipgq
+    autocmd FileType markdown set foldmethod=manual
+    autocmd FileType markdown nnoremap <leader>it o- [ ] <c-r>=strftime('%y/%m/%d %H:%M')<cr> - 
+augroup end
+
+augroup nim
+    autocmd FileType nim setlocal commentstring=#\ %s
+augroup end
+
+autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
+
 cnoremap y<space>/ :normal qaq<cr> :g//y A<left><left><left><left>
 cnoreabbrev bda bufdo bd
+cnoreabbrev bd b # \| bd #
+" cnoremap tvs :vs term cnoremap tsp :silent !tmux splitw -v "nvim %"
 
 iabbrev #! #!/usr/bin/env
+iabbrev ddate <c-r>=strftime('%y/%m/%d %H:%M')<cr>
 
 " This highlights the current word
 augroup hlword
@@ -214,7 +307,6 @@ fun! HlWord()
     exe 'match none'
   end
 endfun
-highlight CursorOverWord ctermbg=8 ctermfg=White
 
 inoremap <expr> <cr> pumvisible() ? '<c-e><cr>' : '<cr>'
 inoremap <expr> <tab> pumvisible() ? '<c-n>' : '<tab>'

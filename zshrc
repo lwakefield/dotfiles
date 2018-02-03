@@ -5,10 +5,12 @@ export ZSH=~/.oh-my-zsh
 ZSH_THEME="sorin"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-plugins=(git autojump)
+plugins=(git autojump docker)
+
+source $HOME/.cargo/env
 
 # User configuration
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/scripts
 source $ZSH/oh-my-zsh.sh
 export CLICOLOR=1
 export TERM="xterm-256color"
@@ -23,20 +25,18 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Base16 Shell
-# BASE16_SHELL="$HOME/.config/base16-shell/scripts/base16-tomorrow-night.sh"
-# [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
-
 export GOPATH=~/go
 export PATH=$PATH:$GOPATH/bin
 
 # export PATH="$(brew --prefix php56)/bin:$PATH"
 export PATH=$HOME/.composer/vendor/bin:$PATH
+export PATH=/usr/local/lib/python3.6/site-packages/:$PATH
 
 alias lbg='source $BASE16_LIGHT_SHELL'
 alias dbg='source $BASE16_DARK_SHELL'
 alias s='source ~/.zshrc'
 alias vim='nvim'
+alias vi='nvim'
 alias server='python -m SimpleHTTPServer'
 alias weather='curl -4 wttr.in'
 alias chromeless='open -a "Google Chrome" -n --args "--app=http://localhost:8080"'
@@ -48,11 +48,11 @@ alias vu='vagrant up'
 alias vd='vagrant halt'
 alias json='python -m json.tool'
 alias untar='tar -xvf'
-alias kc='kubectl'
-alias kcd='kubectl describe'
-alias kcg='kubectl get'
-alias kcc='kubectl create'
-alias vimn='vim -u NONE'
+alias rand='openssl rand -hex 8'
+alias tvs='tmux split-window -h'
+alias tsp='tmux split-window -v'
+alias ta='tmux attach'
+alias td='tmux detach'
 
 alias pbcopy='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
@@ -64,6 +64,11 @@ dstop() { docker stop $(docker ps -a -q); }
 
 env2var() { export $(cat $1 | xargs) }
 
+alias gbb='git checkout $(git branch | fzf)'
+alias update-retail='heroku run python manage.py addstores'
+alias npmo="npm --cache-min 9999999 "
+alias c='cd $(ls | fzf)'
+
 export FZF_DEFAULT_COMMAND='ag -g ""'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -73,9 +78,7 @@ search_replace() {
 }
 alias sr='search_replace'
 
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+search_do() {
+    ag -l $1 | xargs sed -i '' "$2"
+}
+alias sd='search_do'
